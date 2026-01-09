@@ -14,75 +14,64 @@
             color: #f1f5f9;
         }
 
-        /* Strict 6x5 Grid Setup */
+        /* Strict Grid Setup */
         .pokemon-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            grid-template-rows: repeat(5, 1fr);
             gap: 12px;
         }
 
         @media (max-width: 1400px) {
-            .pokemon-grid {
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: auto;
-            }
+            .pokemon-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         @media (max-width: 768px) {
-            .pokemon-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .pokemon-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        .checkbox-custom {
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            background: rgba(0, 0, 0, 0.4);
+        /* Interactive Button Styles */
+        .track-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            padding: 6px 4px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.4);
+            user-select: none;
+            position: relative;
+            z-index: 20;
         }
 
-        .checkbox-reg:checked {
-            background-color: #3b82f6;
-            border-color: #60a5fa;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
-        }
-
-        .checkbox-living:checked {
-            background-color: #f59e0b;
-            border-color: #fbbf24;
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
-        }
-
-        .checkbox-alpha:checked {
-            background-color: #ef4444;
-            border-color: #f87171;
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-        }
-
-        .checkbox-mega:checked {
-            background-color: #10b981;
-            border-color: #34d399;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-        }
-
-        /* Using a reliable checkmark character */
-        .checkbox-custom:checked::after {
-            content: "\2713"; 
+        .track-btn input {
             position: absolute;
-            color: white;
-            font-size: 11px;
-            font-weight: 900;
-            line-height: 1;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        /* Active State Highlights */
+        .btn-reg:has(input:checked) { background-color: #3b82f6 !important; border-color: #60a5fa !important; color: white !important; box-shadow: 0 0 12px rgba(59, 130, 246, 0.4); }
+        .btn-living:has(input:checked) { background-color: #f59e0b !important; border-color: #fbbf24 !important; color: white !important; box-shadow: 0 0 12px rgba(245, 158, 11, 0.4); }
+        .btn-alpha:has(input:checked) { background-color: #ef4444 !important; border-color: #f87171 !important; color: white !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.4); }
+        .btn-mega:has(input:checked) { background-color: #10b981 !important; border-color: #34d399 !important; color: white !important; box-shadow: 0 0 12px rgba(16, 185, 129, 0.4); }
+
+        /* Default Text Colors */
+        .btn-reg { color: #93c5fd; }
+        .btn-living { color: #fcd34d; }
+        .btn-alpha { color: #fca5a5; }
+        .btn-mega { color: #6ee7b7; }
+
+        .btn-reg:hover, .btn-living:hover, .btn-alpha:hover, .btn-mega:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(0, 0, 0, 0.6);
         }
 
         .box-card {
@@ -92,7 +81,7 @@
         }
 
         .sticky-header {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid #1e293b;
         }
@@ -104,19 +93,14 @@
             text-overflow: ellipsis;
         }
 
-        /* Specimen Cell with Background Blend */
         .pkmn-cell {
             position: relative;
             overflow: hidden;
-            background-size: auto 100% !important; /* Max height to fill */
+            background-size: auto 100% !important; 
             background-repeat: no-repeat !important;
-            background-position: calc(100% - 10px) center !important; /* 10px from right */
+            background-position: calc(100% - 10px) center !important; 
             background-blend-mode: overlay !important;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .pkmn-cell:hover {
-            transform: translateY(-2px);
+            transition: transform 0.2s ease;
         }
 
         /* Type Colors */
@@ -140,9 +124,15 @@
         .type-flying { background-color: #312e81 !important; border-color: #3730a3 !important; }
 
         #missing-modal { backdrop-filter: blur(8px); }
+        .text-shadow { text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
-        .text-shadow {
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        .box-complete-badge, .pkmn-complete-badge {
+            animation: badge-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes badge-in {
+            from { transform: scale(0.8) translateY(-5px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
         }
     </style>
 </head>
@@ -155,7 +145,7 @@
                     <h1 class="text-3xl font-black bg-gradient-to-r from-blue-400 via-white to-red-500 bg-clip-text text-transparent uppercase tracking-tighter">
                         Legends Z-A Tracker
                     </h1>
-                    <a href="https://kampootee.github.io/pokedex/za/dlc1/" target="_blank" class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter hover:bg-slate-200 transition-all shadow-lg active:scale-95">
+                    <a href="https://example.com/dlc1" target="_blank" class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter hover:bg-slate-200 transition-all shadow-lg active:scale-95">
                         DLC1 Pokédex
                     </a>
                 </div>
@@ -165,59 +155,43 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                <!-- Registered Progress -->
                 <div onclick="showMissing('reg')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-blue-500/20 shadow-lg hover:border-blue-500/5 transition-all">
                     <div class="flex justify-between items-end mb-2">
-                        <div>
-                            <span class="text-[9px] font-black text-blue-400 uppercase tracking-widest block mb-0.5">Database Sync</span>
-                            <span class="text-sm font-bold text-white uppercase tracking-tight">Registered</span>
-                        </div>
+                        <div><span class="text-[9px] font-black text-blue-400 uppercase tracking-widest block mb-0.5">Pokédex</span><span class="text-sm font-bold text-white uppercase tracking-tight">Registered</span></div>
                         <span class="text-xl font-black text-shadow text-blue-400" id="reg-stats">0 / 232</span>
                     </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="reg-bar" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
-                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="reg-bar" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
                     <div class="mt-2 text-[8px] font-black text-blue-400/30 group-hover:text-blue-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ?</div>
                 </div>
 
+                <!-- Living Progress -->
                 <div onclick="showMissing('living')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-amber-500/20 shadow-lg hover:border-amber-500/5 transition-all">
                     <div class="flex justify-between items-end mb-2">
-                        <div>
-                            <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest block mb-0.5">Inventory</span>
-                            <span class="text-sm font-bold text-white uppercase tracking-tight">Living Dex</span>
-                        </div>
+                        <div><span class="text-[9px] font-black text-amber-400 uppercase tracking-widest block mb-0.5">Inventory</span><span class="text-sm font-bold text-white uppercase tracking-tight">Living Dex</span></div>
                         <span class="text-xl font-black text-shadow text-amber-400" id="living-stats">0 / 232</span>
                     </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="living-bar" class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
-                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="living-bar" class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
                     <div class="mt-2 text-[8px] font-black text-amber-400/30 group-hover:text-amber-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ?</div>
                 </div>
 
+                <!-- Alpha Progress -->
                 <div onclick="showMissing('alpha')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-red-500/20 shadow-lg hover:border-red-500/5 transition-all">
                     <div class="flex justify-between items-end mb-2">
-                        <div>
-                            <span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Specimen</span>
-                            <span class="text-sm font-bold text-white uppercase tracking-tight">Alpha</span>
-                        </div>
+                        <div><span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Specimen</span><span class="text-sm font-bold text-white uppercase tracking-tight">Alpha</span></div>
                         <span class="text-xl font-black text-shadow text-red-400" id="alpha-stats">0 / 232</span>
                     </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="alpha-bar" class="bg-gradient-to-r from-red-600 to-red-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
-                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="alpha-bar" class="bg-gradient-to-r from-red-600 to-red-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
                     <div class="mt-2 text-[8px] font-black text-red-400/30 group-hover:text-red-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ?</div>
                 </div>
 
+                <!-- Mega Progress -->
                 <div onclick="showMissing('mega')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/20 shadow-lg hover:border-emerald-500/5 transition-all">
                     <div class="flex justify-between items-end mb-2">
-                        <div>
-                            <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block mb-0.5">Evolution</span>
-                            <span class="text-sm font-bold text-white uppercase tracking-tight">Mega Forms</span>
-                        </div>
+                        <div><span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block mb-0.5">Evolution</span><span class="text-sm font-bold text-white uppercase tracking-tight">Mega Forms</span></div>
                         <span class="text-xl font-black text-shadow text-emerald-400" id="mega-stats">0 / 0</span>
                     </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="mega-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
-                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="mega-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
                     <div class="mt-2 text-[8px] font-black text-emerald-400/30 group-hover:text-emerald-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ?</div>
                 </div>
             </div>
@@ -245,8 +219,26 @@
     </div>
 
     <script>
+        const STORAGE_KEY = 'legends_za_pokedex_persistent_storage';
         const TOTAL_PKMN = 232;
         const PKMN_PER_BOX = 30;
+        
+        // Legends Z-A Specific Rules
+        const NO_ALPHA_IDS = [228, 229, 230, 231, 232]; // Xerneas, Yveltal, Zygarde, Diancie, Mewtwo
+        
+        // Mapping Mega Evolutions to List Indices (1-based)
+        const MEGA_ELITE = {
+            3: 1, 6: 1, 9: 1, 20: 1, 23: 1, 26: 1, 33: 1, 35: 1, 37: 1, 39: 1,
+            46: 1, 57: 1, 64: 1, 67: 1, 70: 1, 76: 1, 84: 1, 86: 1, 89: 1, 90: 1,
+            92: 1, 94: 1, 95: 1, 110: 1, 112: 1, 117: 1, 121: 1, 130: 1, 132: 1, 133: 1,
+            134: 1, 136: 1, 138: 1, 141: 1, 144: 1, 147: 1, 150: 1, 153: 2, 156: 1, 160: 1,
+            162: 1, 170: 1, 171: 1, 173: 1, 177: 1, 178: 1, 179: 1, 181: 1, 185: 1, 191: 1,
+            192: 1, 198: 1, 201: 1, 208: 1, 211: 1, 212: 1, 215: 1, 216: 1, 219: 1, 222: 1,
+            223: 1, 224: 1, 227: 1, 230: 1, 231: 1, 232: 2
+        };
+
+        const TOTAL_MEGAS = Object.values(MEGA_ELITE).reduce((a, b) => a + b, 0);
+
         const container = document.getElementById('pokedex-container');
         const saveStatusEl = document.getElementById('save-status');
 
@@ -257,7 +249,7 @@
             "Roserade", "Magikarp", "Gyarados", "Binacle", "Barbaracle", "Staryu", "Starmie", "Flabébé", "Floette", "Florges",
             "Skiddo", "Gogoat", "Espurr", "Meowstic", "Litleo", "Pyroar", "Pancham", "Pangoro", "Trubbish", "Garbodor",
             "Dedenne", "Pichu", "Pikachu", "Raichu", "Cleffa", "Clefairy", "Clefable", "Spinarak", "Ariados", "Ekans",
-            "Arbok", "Abra", "Kadabra", "Alakazam", "Gastly", "Haunter", "Gengar", "Venipede", "Whirlipede", "Scolipede",
+            "Arbok", "Abra", "Kadabra", "Alakazam", "Haunter", "Gengar", "Gastly", "Haunter", "Gengar", "Venipede", "Whirlipede", "Scolipede",
             "Honedge", "Doublade", "Aegislash", "Bellsprout", "Weepinbell", "Victreebel", "Pansage", "Simisage", "Pansear", "Simisear",
             "Panpour", "Simipour", "Meditite", "Medicham", "Electrike", "Manectric", "Ralts", "Kirlia", "Gardevoir", "Gallade",
             "Houndour", "Houndoom", "Swablu", "Altaria", "Audino", "Spritzee", "Aromatisse", "Swirlix", "Slurpuff", "Eevee",
@@ -278,30 +270,18 @@
         ];
 
         const NATIONAL_IDS = [
-            152, 153, 154, 498, 499, 500, 158, 159, 160, 661,
-            662, 663, 659, 660, 664, 665, 666, 13, 14, 15,
-            16, 17, 18, 179, 180, 181, 504, 505, 406, 315,
-            407, 129, 130, 688, 689, 120, 121, 669, 670, 671,
-            672, 673, 677, 678, 667, 668, 674, 675, 568, 569,
-            702, 172, 25, 26, 173, 35, 36, 167, 168, 23,
-            24, 63, 64, 65, 92, 93, 94, 543, 544, 545,
-            679, 680, 681, 69, 70, 71, 511, 512, 513, 514,
-            515, 516, 307, 308, 309, 310, 280, 281, 282, 475,
-            228, 229, 333, 334, 531, 682, 683, 684, 685, 133,
-            134, 135, 136, 196, 197, 470, 471, 700, 427, 428,
-            353, 354, 582, 583, 584, 322, 323, 449, 450, 529,
-            530, 551, 552, 553, 66, 67, 68, 443, 444, 445,
-            703, 302, 303, 359, 447, 448, 79, 80, 199, 318,
-            319, 602, 603, 604, 147, 148, 149, 1, 2, 3,
-            4, 5, 6, 7, 8, 9, 618, 676, 686, 687,
-            690, 691, 692, 693, 704, 705, 706, 225, 361, 362,
-            478, 459, 460, 712, 713, 123, 212, 127, 214, 587,
-            701, 708, 709, 559, 560, 714, 715, 707, 607, 608,
-            609, 142, 696, 697, 698, 699, 95, 208, 304, 305,
-            306, 694, 695, 710, 711, 246, 247, 248, 656, 657,
-            658, 870, 650, 651, 652, 227, 653, 654, 655, 371,
-            372, 373, 115, 780, 374, 375, 376, 716, 717, 718,
-            719, 150
+            152, 153, 154, 498, 499, 500, 158, 159, 160, 661, 662, 663, 659, 660, 664, 665, 666, 13, 14, 15,
+            16, 17, 18, 179, 180, 181, 504, 505, 406, 315, 407, 129, 130, 688, 689, 120, 121, 669, 670, 671,
+            672, 673, 677, 678, 667, 668, 674, 675, 568, 569, 702, 172, 25, 26, 173, 35, 36, 167, 168, 23,
+            24, 63, 64, 65, 92, 93, 94, 543, 544, 545, 679, 680, 681, 69, 70, 71, 511, 512, 513, 514,
+            515, 516, 307, 308, 309, 310, 280, 281, 282, 475, 228, 229, 333, 334, 531, 682, 683, 684, 685, 133,
+            134, 135, 136, 196, 197, 470, 471, 700, 427, 428, 353, 354, 582, 583, 584, 322, 323, 449, 450, 529,
+            530, 551, 552, 553, 66, 67, 68, 443, 444, 445, 703, 302, 303, 359, 447, 448, 79, 80, 199, 318,
+            319, 602, 603, 604, 147, 148, 149, 1, 2, 3, 4, 5, 6, 7, 8, 9, 618, 676, 686, 687,
+            690, 691, 692, 693, 704, 705, 706, 225, 361, 362, 478, 459, 460, 712, 713, 123, 212, 127, 214, 587,
+            701, 708, 709, 559, 560, 714, 715, 707, 607, 608, 609, 142, 696, 697, 698, 699, 95, 208, 304, 305,
+            306, 694, 695, 710, 711, 246, 247, 248, 656, 657, 658, 870, 650, 651, 652, 227, 653, 654, 655, 371,
+            372, 373, 115, 780, 374, 375, 376, 716, 717, 718, 719, 150
         ];
 
         const POKEMON_TYPES = [
@@ -331,18 +311,6 @@
             "fairy", "psychic"
         ];
 
-        const MEGA_ELITE = {
-            3: 1, 6: 1, 9: 1, 20: 1, 23: 1, 26: 1, 33: 1, 35: 1, 37: 1, 39: 1, 
-            44: 1, 46: 1, 54: 2, 57: 1, 64: 1, 67: 1, 70: 1, 76: 1, 84: 1, 86: 1, 
-            89: 1, 90: 1, 92: 1, 94: 1, 95: 1, 110: 1, 112: 1, 117: 1, 121: 1, 130: 2, 
-            132: 1, 133: 1, 134: 2, 136: 2, 138: 1, 141: 1, 144: 1, 147: 1, 150: 1, 153: 2, 
-            156: 1, 160: 1, 162: 1, 170: 1, 171: 1, 173: 1, 177: 1, 178: 1, 179: 1, 181: 1, 
-            185: 1, 191: 1, 192: 1, 198: 1, 201: 1, 208: 1, 211: 1, 212: 1, 215: 1, 216: 1, 
-            221: 1, 224: 1, 225: 1, 226: 1, 228: 1, 230: 1, 231: 1, 232: 2
-        };
-
-        const TOTAL_MEGAS = Object.values(MEGA_ELITE).reduce((a, b) => a + b, 0);
-
         function init() {
             let currentId = 1;
             let boxNum = 1;
@@ -358,11 +326,18 @@
 
         function createBox(number, start, end) {
             const boxCard = document.createElement('div');
-            boxCard.className = 'box-card p-8 rounded-[2.5rem] w-full max-w-[1400px]';
+            boxCard.className = 'box-card p-8 rounded-[2.5rem] w-full max-w-[1400px] relative overflow-hidden';
+            boxCard.id = `box-container-${number}`;
+            
             boxCard.innerHTML = `
-                <div class="flex items-baseline gap-4 mb-8 border-b border-slate-700/50 pb-5">
-                    <span class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter">Box ${number}</span>
-                    <span class="text-white font-black text-xl tracking-tight">#${String(start).padStart(3, '0')} — #${String(end).padStart(3, '0')}</span>
+                <div class="flex items-baseline justify-between mb-8 border-b border-slate-700/50 pb-5">
+                    <div class="flex items-baseline gap-4">
+                        <span class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter">Box ${number}</span>
+                        <span class="text-white font-black text-xl tracking-tight">#${String(start).padStart(3, '0')} — #${String(end).padStart(3, '0')}</span>
+                    </div>
+                    <div id="box-complete-${number}" class="hidden box-complete-badge bg-emerald-500 text-white px-4 py-1 rounded-xl font-black text-sm uppercase tracking-widest shadow-lg shadow-emerald-500/20">
+                        Box Complete!
+                    </div>
                 </div>
                 <div class="pokemon-grid" id="box-grid-${number}"></div>
             `;
@@ -376,51 +351,42 @@
                 const megaCount = MEGA_ELITE[i] || 0;
                 
                 const item = document.createElement('div');
+                item.id = `pkmn-cell-${i}`;
                 item.className = `group pkmn-cell flex flex-col p-4 rounded-2xl border-2 transition-all duration-300 type-${type}`;
                 item.style.backgroundImage = `url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${natId}.png')`;
 
                 let megaHtml = '';
-                for (let m = 0; m < megaCount; m++) {
-                    const suffix = megaCount > 1 ? (m === 0 ? 'X' : 'Y') : '';
-                    megaHtml += `
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="mega-${i}-${m}" class="checkbox-custom checkbox-mega">
-                            <span class="text-[9px] text-emerald-100 font-bold uppercase tracking-tight text-shadow">Mega${suffix}</span>
-                        </div>
+                if (megaCount === 1) {
+                    megaHtml = `<label class="track-btn btn-mega"><input type="checkbox" id="mega-${i}-0">Mega</label>`;
+                } else if (megaCount === 2) {
+                    const useXY = [153, 232].includes(i); 
+                    megaHtml = `
+                        <label class="track-btn btn-mega"><input type="checkbox" id="mega-${i}-0">${useXY ? "Mega X" : "Mega X"}</label>
+                        <label class="track-btn btn-mega"><input type="checkbox" id="mega-${i}-1">${useXY ? "Mega Y" : "Mega Y"}</label>
                     `;
                 }
 
+                let alphaHtml = '';
+                if (!NO_ALPHA_IDS.includes(i)) {
+                    alphaHtml = `<label class="track-btn btn-alpha"><input type="checkbox" id="alpha-${i}">Alpha</label>`;
+                }
+
                 item.innerHTML = `
-                    <div class="flex items-baseline gap-2 mb-2 min-h-[24px]">
-                        <span class="text-[10px] font-black text-white/50 tracking-wider text-shadow">#${String(i).padStart(3, '0')}</span>
-                        <span class="pkmn-name text-sm font-bold text-white group-hover:scale-105 transition-transform origin-left text-shadow">${name}</span>
+                    <div class="flex items-center justify-between mb-2 min-h-[24px]">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-[10px] font-black text-white/50 tracking-wider text-shadow">#${String(i).padStart(3, '0')}</span>
+                            <span class="pkmn-name text-sm font-bold text-white group-hover:scale-105 transition-transform origin-left text-shadow">${name}</span>
+                        </div>
+                        <div id="pkmn-complete-${i}" class="hidden pkmn-complete-badge bg-emerald-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-black shadow-lg">?</div>
                     </div>
-                    <div class="grid grid-cols-2 gap-x-2 gap-y-2 bg-black/40 p-3 rounded-xl border border-white/5 backdrop-blur-sm relative z-10">
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="reg-${i}" class="checkbox-custom checkbox-reg">
-                            <span class="text-[9px] text-blue-200 font-bold uppercase tracking-tight text-shadow">Registered</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="living-${i}" class="checkbox-custom checkbox-living">
-                            <span class="text-[9px] text-amber-200 font-bold uppercase tracking-tight text-shadow">Living</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="alpha-${i}" class="checkbox-custom checkbox-alpha">
-                            <span class="text-[9px] text-red-200 font-bold uppercase tracking-tight text-shadow">Alpha</span>
-                        </div>
+                    <div class="grid grid-cols-2 gap-2 bg-black/40 p-2 rounded-xl border border-white/5 backdrop-blur-sm relative z-10">
+                        <label class="track-btn btn-reg"><input type="checkbox" id="reg-${i}">Registered</label>
+                        <label class="track-btn btn-living"><input type="checkbox" id="living-${i}">Living</label>
+                        ${alphaHtml}
                         ${megaHtml}
                     </div>
                 `;
                 grid.appendChild(item);
-            }
-            // Fillers to maintain 6x5 shape
-            const actualCount = end - start + 1;
-            if (actualCount < PKMN_PER_BOX) {
-                for(let j = 0; j < (PKMN_PER_BOX - actualCount); j++) {
-                    const spacer = document.createElement('div');
-                    spacer.className = 'opacity-0 pointer-events-none hidden md:block';
-                    grid.appendChild(spacer);
-                }
             }
         }
 
@@ -434,17 +400,23 @@
             let catTitle = category === 'reg' ? "Missing: Registered Dex" : category === 'living' ? "Missing: Living Dex" : category === 'alpha' ? "Missing: Alpha Specimens" : "Missing: Mega Forms";
             title.innerText = catTitle;
             for (let i = 1; i <= TOTAL_PKMN; i++) {
+                const name = POKEMON_NAMES[i - 1];
+                const type = POKEMON_TYPES[i - 1];
                 if (category !== 'mega') {
+                    if (category === 'alpha' && NO_ALPHA_IDS.includes(i)) continue;
                     const cb = document.getElementById(`${category}-${i}`);
-                    if (cb && !cb.checked) missingItems.push({ id: i, name: POKEMON_NAMES[i-1], type: POKEMON_TYPES[i-1] });
+                    if (cb && !cb.checked) missingItems.push({ id: i, name: name, type: type });
                 } else {
                     const megaCount = MEGA_ELITE[i] || 0;
-                    for (let m = 0; m < megaCount; m++) {
-                        const cb = document.getElementById(`mega-${i}-${m}`);
-                        if (cb && !cb.checked) {
-                            const suffix = megaCount > 1 ? (m === 0 ? ' X' : (m === 1 ? ' Y' : ' Z')) : '';
-                            missingItems.push({ id: i, name: `Mega ${POKEMON_NAMES[i-1]}${suffix}`, type: POKEMON_TYPES[i-1] });
-                        }
+                    const useXY = [153, 232].includes(i);
+                    if (megaCount === 1) {
+                        const cb = document.getElementById(`mega-${i}-0`);
+                        if (cb && !cb.checked) missingItems.push({ id: i, name: `Mega ${name}`, type: type });
+                    } else if (megaCount === 2) {
+                        const cbX = document.getElementById(`mega-${i}-0`);
+                        const cbY = document.getElementById(`mega-${i}-1`);
+                        if (cbX && !cbX.checked) missingItems.push({ id: i, name: `Mega ${name} X`, type: type });
+                        if (cbY && !cbY.checked) missingItems.push({ id: i, name: `Mega ${name} Y`, type: type });
                     }
                 }
             }
@@ -463,25 +435,61 @@
         function closeModal() { document.getElementById('missing-modal').classList.add('hidden'); }
 
         function updateStats(showFeedback = true) {
-            const r = document.querySelectorAll('.checkbox-reg:checked').length;
-            const l = document.querySelectorAll('.checkbox-living:checked').length;
-            const a = document.querySelectorAll('.checkbox-alpha:checked').length;
-            const m = document.querySelectorAll('.checkbox-mega:checked').length;
+            const r = document.querySelectorAll('.btn-reg input:checked').length;
+            const l = document.querySelectorAll('.btn-living input:checked').length;
+            const a = document.querySelectorAll('.btn-alpha input:checked').length;
+            const m = document.querySelectorAll('.btn-mega input:checked').length;
+            const alphaTotal = TOTAL_PKMN - NO_ALPHA_IDS.length;
+
             document.getElementById('reg-stats').innerText = `${r} / ${TOTAL_PKMN}`;
             document.getElementById('living-stats').innerText = `${l} / ${TOTAL_PKMN}`;
-            document.getElementById('alpha-stats').innerText = `${a} / ${TOTAL_PKMN}`;
+            document.getElementById('alpha-stats').innerText = `${a} / ${alphaTotal}`;
             document.getElementById('mega-stats').innerText = `${m} / ${TOTAL_MEGAS}`;
+            
             document.getElementById('reg-bar').style.width = (r/TOTAL_PKMN*100)+'%';
             document.getElementById('living-bar').style.width = (l/TOTAL_PKMN*100)+'%';
-            document.getElementById('alpha-bar').style.width = (a/TOTAL_PKMN*100)+'%';
-            document.getElementById('mega-bar').style.width = (m/TOTAL_MEGAS*100)+'%';
+            document.getElementById('alpha-bar').style.width = (a/alphaTotal*100)+'%';
+            
+            const megaPercent = TOTAL_MEGAS > 0 ? (m / TOTAL_MEGAS * 100) : 0;
+            document.getElementById('mega-bar').style.width = megaPercent + '%';
+            
+            for (let i = 1; i <= TOTAL_PKMN; i++) {
+                const cell = document.getElementById(`pkmn-cell-${i}`);
+                const badge = document.getElementById(`pkmn-complete-${i}`);
+                if (cell && badge) {
+                    const inputs = cell.querySelectorAll('input');
+                    const checked = cell.querySelectorAll('input:checked');
+                    if (inputs.length > 0 && inputs.length === checked.length) {
+                        badge.classList.remove('hidden');
+                        cell.style.borderColor = 'rgba(16, 185, 129, 0.6)';
+                    } else {
+                        badge.classList.add('hidden');
+                        cell.style.borderColor = '';
+                    }
+                }
+            }
+
+            const totalBoxes = Math.ceil(TOTAL_PKMN / PKMN_PER_BOX);
+            for (let b = 1; b <= totalBoxes; b++) {
+                const boxGrid = document.getElementById(`box-grid-${b}`);
+                const badge = document.getElementById(`box-complete-${b}`);
+                if (boxGrid && badge) {
+                    const inputs = boxGrid.querySelectorAll('input');
+                    const checkedInputs = boxGrid.querySelectorAll('input:checked');
+                    if (inputs.length > 0 && inputs.length === checkedInputs.length) {
+                        badge.classList.remove('hidden');
+                    } else {
+                        badge.classList.add('hidden');
+                    }
+                }
+            }
             saveProgress(showFeedback);
         }
 
         function saveProgress(showFeedback) {
             const state = {};
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => { if (cb.checked) state[cb.id] = true; });
-            localStorage.setItem('za_pokedex_v7_images_fixed_link', JSON.stringify(state));
+            document.querySelectorAll('input[type="checkbox"]').forEach(input => { if (input.checked) state[input.id] = true; });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
             if (showFeedback) {
                 saveStatusEl.style.opacity = '1';
                 setTimeout(() => { saveStatusEl.style.opacity = '0'; }, 1500);
@@ -489,21 +497,24 @@
         }
 
         function loadProgress() {
-            const saved = localStorage.getItem('za_pokedex_v7_images_fixed_link');
+            const saved = localStorage.getItem(STORAGE_KEY);
             if (!saved) return;
-            const state = JSON.parse(saved);
-            Object.keys(state).forEach(id => { const cb = document.getElementById(id); if (cb) cb.checked = true; });
+            try {
+                const state = JSON.parse(saved);
+                Object.keys(state).forEach(id => { const input = document.getElementById(id); if (input) input.checked = true; });
+                updateStats(false);
+            } catch(e) { console.error("Load failed", e); }
         }
 
         function resetTracker() {
             if (confirm("SYSTEM OVERRIDE: Clear all saved data?")) {
-                localStorage.removeItem('za_pokedex_v7_images_fixed_link');
+                localStorage.removeItem(STORAGE_KEY);
                 document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
                 updateStats(false);
             }
         }
 
-        document.addEventListener('change', (e) => { if (e.target.classList.contains('checkbox-custom')) updateStats(true); });
+        document.addEventListener('change', (e) => { if (e.target.type === 'checkbox') updateStats(true); });
         window.onclick = function(e) { if (e.target == document.getElementById('missing-modal')) closeModal(); }
         init();
     </script>
