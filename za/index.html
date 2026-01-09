@@ -56,6 +56,12 @@
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
 
+        .checkbox-living:checked {
+            background-color: #f59e0b;
+            border-color: #fbbf24;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
         .checkbox-alpha:checked {
             background-color: #ef4444;
             border-color: #f87171;
@@ -73,7 +79,7 @@
             content: "\2713"; 
             position: absolute;
             color: white;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
             line-height: 1;
         }
@@ -124,14 +130,14 @@
         <div class="max-w-[1700px] mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                 <h1 class="text-3xl font-black bg-gradient-to-r from-blue-400 via-white to-red-500 bg-clip-text text-transparent uppercase tracking-tighter">
-                    Legends Z-A Lumiose Tracker
+                    Legends Z-A Tracker
                 </h1>
                 <div id="save-status" class="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2 md:mt-0 transition-opacity opacity-0">
                     <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>Synced to Browser
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 <!-- Registered Progress -->
                 <div class="bg-slate-900/80 p-4 rounded-2xl border border-blue-500/20 shadow-lg shadow-blue-500/5">
                     <div class="flex justify-between items-end mb-2">
@@ -143,6 +149,20 @@
                     </div>
                     <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                         <div id="reg-bar" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Living Progress -->
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-amber-500/20 shadow-lg shadow-amber-500/5">
+                    <div class="flex justify-between items-end mb-2">
+                        <div>
+                            <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest block mb-0.5">Physical Inventory</span>
+                            <span class="text-sm font-bold text-white uppercase">Living Dex</span>
+                        </div>
+                        <span class="text-xl font-black text-amber-400" id="living-stats">0 / 232</span>
+                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                        <div id="living-bar" class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
                     </div>
                 </div>
 
@@ -324,6 +344,11 @@
                         </div>
                         <div class="w-px h-8 bg-white/10"></div>
                         <div class="flex flex-col items-center gap-1 flex-1">
+                            <span class="text-[7px] text-amber-300 font-black uppercase tracking-tighter shadow-sm">Living</span>
+                            <input type="checkbox" id="living-${i}" class="checkbox-custom checkbox-living" title="Living Dex ${pkmnName}">
+                        </div>
+                        <div class="w-px h-8 bg-white/10"></div>
+                        <div class="flex flex-col items-center gap-1 flex-1">
                             <span class="text-[7px] text-red-300 font-black uppercase tracking-tighter shadow-sm">Alpha</span>
                             <input type="checkbox" id="alpha-${i}" class="checkbox-custom checkbox-alpha" title="Alpha ${pkmnName}">
                         </div>
@@ -345,14 +370,17 @@
 
         function updateStats(showFeedback = true) {
             const regChecked = document.querySelectorAll('.checkbox-reg:checked').length;
+            const livingChecked = document.querySelectorAll('.checkbox-living:checked').length;
             const alphaChecked = document.querySelectorAll('.checkbox-alpha:checked').length;
             const megaChecked = document.querySelectorAll('.checkbox-mega:checked').length;
 
             document.getElementById('reg-stats').innerText = `${regChecked} / ${TOTAL_PKMN}`;
+            document.getElementById('living-stats').innerText = `${livingChecked} / ${TOTAL_PKMN}`;
             document.getElementById('alpha-stats').innerText = `${alphaChecked} / ${TOTAL_PKMN}`;
             document.getElementById('mega-stats').innerText = `${megaChecked} / ${TOTAL_MEGAS}`;
 
             document.getElementById('reg-bar').style.width = `${(regChecked / TOTAL_PKMN) * 100}%`;
+            document.getElementById('living-bar').style.width = `${(livingChecked / TOTAL_PKMN) * 100}%`;
             document.getElementById('alpha-bar').style.width = `${(alphaChecked / TOTAL_PKMN) * 100}%`;
             document.getElementById('mega-bar').style.width = `${(megaChecked / TOTAL_MEGAS) * 100}%`;
             
@@ -366,7 +394,7 @@
             });
             
             try {
-                localStorage.setItem('za_pokedex_v2_final_persist', JSON.stringify(state));
+                localStorage.setItem('za_pokedex_v3_final_persist', JSON.stringify(state));
                 if (showFeedback) {
                     saveStatusEl.style.opacity = '1';
                     setTimeout(() => {
@@ -379,7 +407,7 @@
         }
 
         function loadProgress() {
-            const saved = localStorage.getItem('za_pokedex_v2_final_persist');
+            const saved = localStorage.getItem('za_pokedex_v3_final_persist');
             if (!saved) return;
             try {
                 const state = JSON.parse(saved);
@@ -394,7 +422,7 @@
 
         function resetTracker() {
             if (confirm("SYSTEM OVERRIDE: Clear all saved data? This cannot be undone.")) {
-                localStorage.removeItem('za_pokedex_v2_final_persist');
+                localStorage.removeItem('za_pokedex_v3_final_persist');
                 document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
                 updateStats(false);
             }
