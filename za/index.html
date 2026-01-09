@@ -22,7 +22,7 @@
             gap: 12px;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
             .pokemon-grid {
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: auto;
@@ -40,7 +40,7 @@
             width: 18px;
             height: 18px;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -48,30 +48,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .checkbox-reg:checked {
             background-color: #3b82f6;
             border-color: #60a5fa;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
         }
 
         .checkbox-living:checked {
             background-color: #f59e0b;
             border-color: #fbbf24;
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
         }
 
         .checkbox-alpha:checked {
             background-color: #ef4444;
             border-color: #f87171;
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
         }
 
         .checkbox-mega:checked {
             background-color: #10b981;
             border-color: #34d399;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
         }
 
         /* Using a reliable checkmark character */
@@ -103,7 +104,22 @@
             text-overflow: ellipsis;
         }
 
-        /* Type Backgrounds (Muted for Dark Theme) */
+        /* Specimen Cell with Background Blend */
+        .pkmn-cell {
+            position: relative;
+            overflow: hidden;
+            background-size: auto 100% !important; /* Max height to fill */
+            background-repeat: no-repeat !important;
+            background-position: calc(100% - 10px) center !important; /* 10px from right */
+            background-blend-mode: overlay !important;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .pkmn-cell:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Type Colors */
         .type-grass { background-color: #064e3b !important; border-color: #065f46 !important; }
         .type-fire { background-color: #7f1d1d !important; border-color: #991b1b !important; }
         .type-water { background-color: #1e3a8a !important; border-color: #1e40af !important; }
@@ -122,6 +138,12 @@
         .type-steel { background-color: #1e293b !important; border-color: #334155 !important; }
         .type-dark { background-color: #020617 !important; border-color: #0f172a !important; }
         .type-flying { background-color: #312e81 !important; border-color: #3730a3 !important; }
+
+        #missing-modal { backdrop-filter: blur(8px); }
+
+        .text-shadow {
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
     </style>
 </head>
 <body class="min-h-screen pb-20">
@@ -138,79 +160,84 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                <!-- Registered Progress -->
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-blue-500/20 shadow-lg shadow-blue-500/5">
+                <div onclick="showMissing('reg')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-blue-500/20 shadow-lg hover:border-blue-500/5 transition-all">
                     <div class="flex justify-between items-end mb-2">
                         <div>
                             <span class="text-[9px] font-black text-blue-400 uppercase tracking-widest block mb-0.5">Database Sync</span>
-                            <span class="text-sm font-bold text-white uppercase">Registered</span>
+                            <span class="text-sm font-bold text-white uppercase tracking-tight">Registered</span>
                         </div>
-                        <span class="text-xl font-black text-blue-400" id="reg-stats">0 / 232</span>
+                        <span class="text-xl font-black text-shadow text-blue-400" id="reg-stats">0 / 232</span>
                     </div>
                     <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="reg-bar" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                        <div id="reg-bar" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
                     </div>
+                    <div class="mt-2 text-[8px] font-black text-blue-400/30 group-hover:text-blue-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
                 </div>
 
-                <!-- Living Progress -->
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-amber-500/20 shadow-lg shadow-amber-500/5">
+                <div onclick="showMissing('living')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-amber-500/20 shadow-lg hover:border-amber-500/5 transition-all">
                     <div class="flex justify-between items-end mb-2">
                         <div>
-                            <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest block mb-0.5">Physical Inventory</span>
-                            <span class="text-sm font-bold text-white uppercase">Living Dex</span>
+                            <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest block mb-0.5">Inventory</span>
+                            <span class="text-sm font-bold text-white uppercase tracking-tight">Living Dex</span>
                         </div>
-                        <span class="text-xl font-black text-amber-400" id="living-stats">0 / 232</span>
+                        <span class="text-xl font-black text-shadow text-amber-400" id="living-stats">0 / 232</span>
                     </div>
                     <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="living-bar" class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                        <div id="living-bar" class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
                     </div>
+                    <div class="mt-2 text-[8px] font-black text-amber-400/30 group-hover:text-amber-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
                 </div>
 
-                <!-- Alpha Progress -->
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-red-500/20 shadow-lg shadow-red-500/5">
+                <div onclick="showMissing('alpha')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-red-500/20 shadow-lg hover:border-red-500/5 transition-all">
                     <div class="flex justify-between items-end mb-2">
                         <div>
-                            <span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Specimen Collection</span>
-                            <span class="text-sm font-bold text-white uppercase">Alpha</span>
+                            <span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Specimen</span>
+                            <span class="text-sm font-bold text-white uppercase tracking-tight">Alpha</span>
                         </div>
-                        <span class="text-xl font-black text-red-400" id="alpha-stats">0 / 232</span>
+                        <span class="text-xl font-black text-shadow text-red-400" id="alpha-stats">0 / 232</span>
                     </div>
                     <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="alpha-bar" class="bg-gradient-to-r from-red-600 to-red-400 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                        <div id="alpha-bar" class="bg-gradient-to-r from-red-600 to-red-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
                     </div>
+                    <div class="mt-2 text-[8px] font-black text-red-400/30 group-hover:text-red-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
                 </div>
 
-                <!-- Mega Progress -->
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
+                <div onclick="showMissing('mega')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/20 shadow-lg hover:border-emerald-500/5 transition-all">
                     <div class="flex justify-between items-end mb-2">
                         <div>
-                            <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block mb-0.5">Evolution Synergy</span>
-                            <span class="text-sm font-bold text-white uppercase">Mega Form</span>
+                            <span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block mb-0.5">Evolution</span>
+                            <span class="text-sm font-bold text-white uppercase tracking-tight">Mega Forms</span>
                         </div>
-                        <span class="text-xl font-black text-emerald-400" id="mega-stats">0 / 0</span>
+                        <span class="text-xl font-black text-shadow text-emerald-400" id="mega-stats">0 / 0</span>
                     </div>
                     <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="mega-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                        <div id="mega-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
                     </div>
+                    <div class="mt-2 text-[8px] font-black text-emerald-400/30 group-hover:text-emerald-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
                 </div>
             </div>
         </div>
     </header>
 
     <main class="max-w-[1700px] mx-auto px-6">
-        <div id="pokedex-container" class="flex flex-col gap-16 items-center">
-            <!-- Boxes generated via JS -->
-        </div>
-
+        <div id="pokedex-container" class="flex flex-col gap-16 items-center"></div>
         <div class="mt-20 flex flex-col items-center gap-4 text-center">
-            <p class="text-slate-500 text-xs font-medium italic tracking-wide max-w-lg">
-                Type-coded specimen sector tracking active. Progress auto-cached to local core.
-            </p>
             <button onclick="resetTracker()" class="px-10 py-4 bg-slate-900 hover:bg-red-600 hover:text-white text-slate-500 border border-slate-800 rounded-2xl transition-all duration-300 text-sm font-black uppercase tracking-widest">
                 System Wipe: Clear All Data
             </button>
         </div>
     </main>
+
+    <!-- Missing Items Modal -->
+    <div id="missing-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/60">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-2xl max-h-[85vh] rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden">
+            <div class="p-8 border-b border-slate-700 flex justify-between items-center">
+                <h2 id="modal-title" class="text-2xl font-black uppercase tracking-tighter italic">Missing Specimens</h2>
+                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center bg-slate-800 hover:bg-red-600 rounded-full transition-colors font-black">✕</button>
+            </div>
+            <div id="modal-content" class="p-8 overflow-y-auto grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+        </div>
+    </div>
 
     <script>
         const TOTAL_PKMN = 232;
@@ -243,6 +270,33 @@
             "Greninja", "Falinks", "Chespin", "Quilladin", "Chesnaught", "Skarmory", "Fennekin", "Braixen", "Delphox", "Bagon",
             "Shelgon", "Salamence", "Kangaskhan", "Drampa", "Beldum", "Metang", "Metagross", "Xerneas", "Yveltal", "Zygarde",
             "Diancie", "Mewtwo"
+        ];
+
+        const NATIONAL_IDS = [
+            152, 153, 154, 498, 499, 500, 158, 159, 160, 661,
+            662, 663, 659, 660, 664, 665, 666, 13, 14, 15,
+            16, 17, 18, 179, 180, 181, 504, 505, 406, 315,
+            407, 129, 130, 688, 689, 120, 121, 669, 670, 671,
+            672, 673, 677, 678, 667, 668, 674, 675, 568, 569,
+            702, 172, 25, 26, 173, 35, 36, 167, 168, 23,
+            24, 63, 64, 65, 92, 93, 94, 543, 544, 545,
+            679, 680, 681, 69, 70, 71, 511, 512, 513, 514,
+            515, 516, 307, 308, 309, 310, 280, 281, 282, 475,
+            228, 229, 333, 334, 531, 682, 683, 684, 685, 133,
+            134, 135, 136, 196, 197, 470, 471, 700, 427, 428,
+            353, 354, 582, 583, 584, 322, 323, 449, 450, 529,
+            530, 551, 552, 553, 66, 67, 68, 443, 444, 445,
+            703, 302, 303, 359, 447, 448, 79, 80, 199, 318,
+            319, 602, 603, 604, 147, 148, 149, 1, 2, 3,
+            4, 5, 6, 7, 8, 9, 618, 676, 686, 687,
+            690, 691, 692, 693, 704, 705, 706, 225, 361, 362,
+            478, 459, 460, 712, 713, 123, 212, 127, 214, 587,
+            701, 708, 709, 559, 560, 714, 715, 707, 607, 608,
+            609, 142, 696, 697, 698, 699, 95, 208, 304, 305,
+            306, 694, 695, 710, 711, 246, 247, 248, 656, 657,
+            658, 870, 650, 651, 652, 227, 653, 654, 655, 371,
+            372, 373, 115, 780, 374, 375, 376, 716, 717, 718,
+            719, 150
         ];
 
         const POKEMON_TYPES = [
@@ -287,7 +341,6 @@
         function init() {
             let currentId = 1;
             let boxNum = 1;
-            document.getElementById('mega-stats').innerText = `0 / ${TOTAL_MEGAS}`;
             while (currentId <= TOTAL_PKMN) {
                 const boxEnd = Math.min(currentId + PKMN_PER_BOX - 1, TOTAL_PKMN);
                 createBox(boxNum, currentId, boxEnd);
@@ -301,7 +354,6 @@
         function createBox(number, start, end) {
             const boxCard = document.createElement('div');
             boxCard.className = 'box-card p-8 rounded-[2.5rem] w-full max-w-[1400px]';
-            
             boxCard.innerHTML = `
                 <div class="flex items-baseline gap-4 mb-8 border-b border-slate-700/50 pb-5">
                     <span class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter">Box ${number}</span>
@@ -309,55 +361,54 @@
                 </div>
                 <div class="pokemon-grid" id="box-grid-${number}"></div>
             `;
-
             container.appendChild(boxCard);
             const grid = document.getElementById(`box-grid-${number}`);
 
             for (let i = start; i <= end; i++) {
-                const pkmnName = POKEMON_NAMES[i - 1] || `Unknown`;
-                const pkmnType = POKEMON_TYPES[i - 1] || 'normal';
+                const name = POKEMON_NAMES[i - 1];
+                const type = POKEMON_TYPES[i - 1];
+                const natId = NATIONAL_IDS[i - 1];
                 const megaCount = MEGA_ELITE[i] || 0;
                 
                 const item = document.createElement('div');
-                item.className = `group flex flex-col gap-1.5 p-4 rounded-2xl border-2 transition-all duration-300 type-${pkmnType}`;
-                
-                let megaInputs = '';
+                item.className = `group pkmn-cell flex flex-col p-4 rounded-2xl border-2 transition-all duration-300 type-${type}`;
+                item.style.backgroundImage = `url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${natId}.png')`;
+
+                let megaHtml = '';
                 for (let m = 0; m < megaCount; m++) {
-                    const suffix = megaCount > 1 ? (m === 0 ? ' X' : (m === 1 ? ' Y' : ' Z')) : '';
-                    megaInputs += `
-                        <div class="flex flex-col items-center gap-1 flex-1">
-                            <span class="text-[7px] text-emerald-300 font-black uppercase tracking-tighter shadow-sm">Mega${suffix}</span>
-                            <input type="checkbox" id="mega-${i}-${m}" class="checkbox-custom checkbox-mega" title="Mega Evolution ${pkmnName}${suffix}">
+                    const suffix = megaCount > 1 ? (m === 0 ? 'X' : 'Y') : '';
+                    megaHtml += `
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="mega-${i}-${m}" class="checkbox-custom checkbox-mega">
+                            <span class="text-[9px] text-emerald-100 font-bold uppercase tracking-tight text-shadow">Mega${suffix}</span>
                         </div>
                     `;
                 }
 
                 item.innerHTML = `
-                    <div class="flex items-baseline gap-2 min-h-[24px]">
-                        <span class="text-[10px] font-black text-white/50 tracking-wider">#${String(i).padStart(3, '0')}</span>
-                        <span class="pkmn-name text-sm font-bold text-white group-hover:scale-105 transition-transform origin-left" title="${pkmnName}">${pkmnName}</span>
+                    <div class="flex items-baseline gap-2 mb-2 min-h-[24px]">
+                        <span class="text-[10px] font-black text-white/50 tracking-wider text-shadow">#${String(i).padStart(3, '0')}</span>
+                        <span class="pkmn-name text-sm font-bold text-white group-hover:scale-105 transition-transform origin-left text-shadow">${name}</span>
                     </div>
-                    <div class="flex items-center justify-between gap-1 bg-black/30 p-2 rounded-xl border border-white/5 backdrop-blur-sm mt-0.5">
-                        <div class="flex flex-col items-center gap-1 flex-1">
-                            <span class="text-[7px] text-blue-300 font-black uppercase tracking-tighter shadow-sm">Reg</span>
-                            <input type="checkbox" id="reg-${i}" class="checkbox-custom checkbox-reg" title="Register ${pkmnName}">
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-2 bg-black/40 p-3 rounded-xl border border-white/5 backdrop-blur-sm relative z-10">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="reg-${i}" class="checkbox-custom checkbox-reg">
+                            <span class="text-[9px] text-blue-200 font-bold uppercase tracking-tight text-shadow">Registered</span>
                         </div>
-                        <div class="w-px h-8 bg-white/10"></div>
-                        <div class="flex flex-col items-center gap-1 flex-1">
-                            <span class="text-[7px] text-amber-300 font-black uppercase tracking-tighter shadow-sm">Living</span>
-                            <input type="checkbox" id="living-${i}" class="checkbox-custom checkbox-living" title="Living Dex ${pkmnName}">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="living-${i}" class="checkbox-custom checkbox-living">
+                            <span class="text-[9px] text-amber-200 font-bold uppercase tracking-tight text-shadow">Living</span>
                         </div>
-                        <div class="w-px h-8 bg-white/10"></div>
-                        <div class="flex flex-col items-center gap-1 flex-1">
-                            <span class="text-[7px] text-red-300 font-black uppercase tracking-tighter shadow-sm">Alpha</span>
-                            <input type="checkbox" id="alpha-${i}" class="checkbox-custom checkbox-alpha" title="Alpha ${pkmnName}">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="alpha-${i}" class="checkbox-custom checkbox-alpha">
+                            <span class="text-[9px] text-red-200 font-bold uppercase tracking-tight text-shadow">Alpha</span>
                         </div>
-                        ${megaInputs ? `<div class="w-px h-8 bg-white/10"></div>${megaInputs}` : ''}
+                        ${megaHtml}
                     </div>
                 `;
                 grid.appendChild(item);
             }
-
+            // Fillers to maintain 6x5 shape
             const actualCount = end - start + 1;
             if (actualCount < PKMN_PER_BOX) {
                 for(let j = 0; j < (PKMN_PER_BOX - actualCount); j++) {
@@ -368,72 +419,87 @@
             }
         }
 
+        function showMissing(category) {
+            const modal = document.getElementById('missing-modal');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+            modal.classList.remove('hidden');
+            content.innerHTML = '';
+            let missingItems = [];
+            let catTitle = category === 'reg' ? "Missing: Registered Dex" : category === 'living' ? "Missing: Living Dex" : category === 'alpha' ? "Missing: Alpha Specimens" : "Missing: Mega Forms";
+            title.innerText = catTitle;
+            for (let i = 1; i <= TOTAL_PKMN; i++) {
+                if (category !== 'mega') {
+                    const cb = document.getElementById(`${category}-${i}`);
+                    if (cb && !cb.checked) missingItems.push({ id: i, name: POKEMON_NAMES[i-1], type: POKEMON_TYPES[i-1] });
+                } else {
+                    const megaCount = MEGA_ELITE[i] || 0;
+                    for (let m = 0; m < megaCount; m++) {
+                        const cb = document.getElementById(`mega-${i}-${m}`);
+                        if (cb && !cb.checked) {
+                            const suffix = megaCount > 1 ? (m === 0 ? ' X' : (m === 1 ? ' Y' : ' Z')) : '';
+                            missingItems.push({ id: i, name: `Mega ${POKEMON_NAMES[i-1]}${suffix}`, type: POKEMON_TYPES[i-1] });
+                        }
+                    }
+                }
+            }
+            if (missingItems.length === 0) {
+                content.innerHTML = `<div class="col-span-full py-20 text-center font-black text-emerald-400 uppercase tracking-widest text-xl animate-pulse">Category Complete!</div>`;
+            } else {
+                missingItems.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = `p-3 rounded-xl border-2 type-${item.type} bg-opacity-40 flex items-center gap-3`;
+                    div.innerHTML = `<span class="text-[10px] font-black text-white/40">#${String(item.id).padStart(3, '0')}</span><span class="text-sm font-bold text-white">${item.name}</span>`;
+                    content.appendChild(div);
+                });
+            }
+        }
+
+        function closeModal() { document.getElementById('missing-modal').classList.add('hidden'); }
+
         function updateStats(showFeedback = true) {
-            const regChecked = document.querySelectorAll('.checkbox-reg:checked').length;
-            const livingChecked = document.querySelectorAll('.checkbox-living:checked').length;
-            const alphaChecked = document.querySelectorAll('.checkbox-alpha:checked').length;
-            const megaChecked = document.querySelectorAll('.checkbox-mega:checked').length;
-
-            document.getElementById('reg-stats').innerText = `${regChecked} / ${TOTAL_PKMN}`;
-            document.getElementById('living-stats').innerText = `${livingChecked} / ${TOTAL_PKMN}`;
-            document.getElementById('alpha-stats').innerText = `${alphaChecked} / ${TOTAL_PKMN}`;
-            document.getElementById('mega-stats').innerText = `${megaChecked} / ${TOTAL_MEGAS}`;
-
-            document.getElementById('reg-bar').style.width = `${(regChecked / TOTAL_PKMN) * 100}%`;
-            document.getElementById('living-bar').style.width = `${(livingChecked / TOTAL_PKMN) * 100}%`;
-            document.getElementById('alpha-bar').style.width = `${(alphaChecked / TOTAL_PKMN) * 100}%`;
-            document.getElementById('mega-bar').style.width = `${(megaChecked / TOTAL_MEGAS) * 100}%`;
-            
+            const r = document.querySelectorAll('.checkbox-reg:checked').length;
+            const l = document.querySelectorAll('.checkbox-living:checked').length;
+            const a = document.querySelectorAll('.checkbox-alpha:checked').length;
+            const m = document.querySelectorAll('.checkbox-mega:checked').length;
+            document.getElementById('reg-stats').innerText = `${r} / ${TOTAL_PKMN}`;
+            document.getElementById('living-stats').innerText = `${l} / ${TOTAL_PKMN}`;
+            document.getElementById('alpha-stats').innerText = `${a} / ${TOTAL_PKMN}`;
+            document.getElementById('mega-stats').innerText = `${m} / ${TOTAL_MEGAS}`;
+            document.getElementById('reg-bar').style.width = (r/TOTAL_PKMN*100)+'%';
+            document.getElementById('living-bar').style.width = (l/TOTAL_PKMN*100)+'%';
+            document.getElementById('alpha-bar').style.width = (a/TOTAL_PKMN*100)+'%';
+            document.getElementById('mega-bar').style.width = (m/TOTAL_MEGAS*100)+'%';
             saveProgress(showFeedback);
         }
 
         function saveProgress(showFeedback) {
             const state = {};
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-                if (cb.checked) state[cb.id] = true;
-            });
-            
-            try {
-                localStorage.setItem('za_pokedex_v3_final_persist', JSON.stringify(state));
-                if (showFeedback) {
-                    saveStatusEl.style.opacity = '1';
-                    setTimeout(() => {
-                        saveStatusEl.style.opacity = '0';
-                    }, 1500);
-                }
-            } catch (e) {
-                console.error("Storage failed", e);
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => { if (cb.checked) state[cb.id] = true; });
+            localStorage.setItem('za_pokedex_v7_images_fixed', JSON.stringify(state));
+            if (showFeedback) {
+                saveStatusEl.style.opacity = '1';
+                setTimeout(() => { saveStatusEl.style.opacity = '0'; }, 1500);
             }
         }
 
         function loadProgress() {
-            const saved = localStorage.getItem('za_pokedex_v3_final_persist');
+            const saved = localStorage.getItem('za_pokedex_v7_images_fixed');
             if (!saved) return;
-            try {
-                const state = JSON.parse(saved);
-                Object.keys(state).forEach(id => {
-                    const cb = document.getElementById(id);
-                    if (cb) cb.checked = true;
-                });
-            } catch (e) {
-                console.error("Loading failed", e);
-            }
+            const state = JSON.parse(saved);
+            Object.keys(state).forEach(id => { const cb = document.getElementById(id); if (cb) cb.checked = true; });
         }
 
         function resetTracker() {
-            if (confirm("SYSTEM OVERRIDE: Clear all saved data? This cannot be undone.")) {
-                localStorage.removeItem('za_pokedex_v3_final_persist');
+            if (confirm("SYSTEM OVERRIDE: Clear all saved data?")) {
+                localStorage.removeItem('za_pokedex_v7_images_fixed');
                 document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
                 updateStats(false);
             }
         }
 
-        document.addEventListener('change', (e) => {
-            if (e.target.classList.contains('checkbox-custom')) {
-                updateStats(true);
-            }
-        });
-
+        document.addEventListener('change', (e) => { if (e.target.classList.contains('checkbox-custom')) updateStats(true); });
+        window.onclick = function(e) { if (e.target == document.getElementById('missing-modal')) closeModal(); }
         init();
     </script>
 </body>
