@@ -219,7 +219,7 @@
         const TOTAL_PKMN = 232;
         const PKMN_PER_BOX = 30;
         
-        // Legends Z-A Specific Rules (Corrected Indices)
+        // Legends Z-A Specific Rules
         const NO_ALPHA_IDS = [228, 229, 230, 231, 232]; 
 
         const POKEMON_NAMES = [
@@ -229,7 +229,7 @@
             "Roserade", "Magikarp", "Gyarados", "Binacle", "Barbaracle", "Staryu", "Starmie", "Flabébé", "Floette", "Florges",
             "Skiddo", "Gogoat", "Espurr", "Meowstic", "Litleo", "Pyroar", "Pancham", "Pangoro", "Trubbish", "Garbodor",
             "Dedenne", "Pichu", "Pikachu", "Raichu", "Cleffa", "Clefairy", "Clefable", "Spinarak", "Ariados", "Ekans",
-            "Arbok", "Abra", "Kadabra", "Alakazam", "Gastly", "Haunter", "Gengar", "Venipede", "Whirlipede", "Scolipede",
+            "Arbok", "Abra", "Kadabra", "Alakazam", "Haunter", "Gengar", "Venipede", "Whirlipede", "Scolipede",
             "Honedge", "Doublade", "Aegislash", "Bellsprout", "Weepinbell", "Victreebel", "Pansage", "Simisage", "Pansear", "Simisear",
             "Panpour", "Simipour", "Meditite", "Medicham", "Electrike", "Manectric", "Ralts", "Kirlia", "Gardevoir", "Gallade",
             "Houndour", "Houndoom", "Swablu", "Altaria", "Audino", "Spritzee", "Aromatisse", "Swirlix", "Slurpuff", "Eevee",
@@ -409,6 +409,49 @@
             }
         }
 
+        function showMissing(category) {
+            const modal = document.getElementById('missing-modal');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+            modal.classList.remove('hidden');
+            content.innerHTML = '';
+            let missingItems = [];
+            let catTitle = category === 'reg' ? "Missing: Registered Dex" : category === 'living' ? "Missing: Living Dex" : category === 'alpha' ? "Missing: Alpha Specimens" : "Missing: Mega Forms";
+            title.innerText = catTitle;
+            for (let i = 1; i <= TOTAL_PKMN; i++) {
+                const name = POKEMON_NAMES[i - 1];
+                const type = POKEMON_TYPES[i - 1];
+                if (category !== 'mega') {
+                    if (category === 'alpha' && NO_ALPHA_IDS.includes(i)) continue;
+                    const cb = document.getElementById(`${category}-${i}`);
+                    if (cb && !cb.checked) missingItems.push({ id: i, name: name, type: type });
+                } else {
+                    const megaCount = MEGA_ELITE[i] || 0;
+                    if (megaCount === 1) {
+                        const cb = document.getElementById(`mega-${i}-0`);
+                        if (cb && !cb.checked) missingItems.push({ id: i, name: `Mega ${name}`, type: type });
+                    } else if (megaCount === 2) {
+                        const cbX = document.getElementById(`mega-${i}-0`);
+                        const cbY = document.getElementById(`mega-${i}-1`);
+                        if (cbX && !cbX.checked) missingItems.push({ id: i, name: `Mega ${name} X`, type: type });
+                        if (cbY && !cbY.checked) missingItems.push({ id: i, name: `Mega ${name} Y`, type: type });
+                    }
+                }
+            }
+            if (missingItems.length === 0) {
+                content.innerHTML = `<div class="col-span-full py-20 text-center font-black text-emerald-400 uppercase tracking-widest text-xl animate-pulse">Category Complete!</div>`;
+            } else {
+                missingItems.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = `p-3 rounded-xl border-2 type-${item.type} bg-opacity-40 flex items-center gap-3`;
+                    div.innerHTML = `<span class="text-[10px] font-black text-white/40">#${String(item.id).padStart(3, '0')}</span><span class="text-sm font-bold text-white">${item.name}</span>`;
+                    content.appendChild(div);
+                });
+            }
+        }
+
+        function closeModal() { document.getElementById('missing-modal').classList.add('hidden'); }
+
         function updateStats(showFeedback = true) {
             const r = document.querySelectorAll('.btn-reg input:checked').length;
             const l = document.querySelectorAll('.btn-living input:checked').length;
@@ -484,12 +527,13 @@
         function resetTracker() {
             if (confirm("SYSTEM OVERRIDE: Clear all saved data?")) {
                 localStorage.removeItem(STORAGE_KEY);
-                document.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
                 updateStats(false);
             }
         }
 
         document.addEventListener('change', (e) => { if (e.target.type === 'checkbox') updateStats(true); });
+        window.onclick = function(e) { if (e.target == document.getElementById('missing-modal')) closeModal(); }
         init();
     </script>
 </body>
