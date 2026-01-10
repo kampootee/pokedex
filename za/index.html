@@ -145,7 +145,7 @@
                     <h1 class="text-3xl font-black bg-gradient-to-r from-blue-400 via-white to-red-500 bg-clip-text text-transparent uppercase tracking-tighter">
                         Legends Z-A Tracker
                     </h1>
-                    <a href="https://kampootee.github.io/pokedex/za/dlc1" class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter hover:bg-slate-200 transition-all shadow-lg active:scale-95">
+                    <a href="https://example.com/dlc1" target="_blank" class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter hover:bg-slate-200 transition-all shadow-lg active:scale-95">
                         DLC1 Pokédex
                     </a>
                 </div>
@@ -179,7 +179,7 @@
                         <span class="text-xl font-black text-shadow text-red-400" id="alpha-stats">0 / 232</span>
                     </div>
                     <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="alpha-bar" class="bg-gradient-to-r from-red-600 to-red-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
-                    <div class="mt-2 text-[8px] font-black text-blue-400/30 group-hover:text-blue-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
+                    <div class="mt-2 text-[8px] font-black text-red-400/30 group-hover:text-red-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
                 </div>
 
                 <div onclick="showMissing('mega')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/20 shadow-lg hover:border-emerald-500/5 transition-all">
@@ -219,8 +219,8 @@
         const TOTAL_PKMN = 232;
         const PKMN_PER_BOX = 30;
         
-        // Legends Z-A Specific Rules
-        const NO_ALPHA_IDS = [228, 229, 230, 231, 232]; // Xerneas, Yveltal, Zygarde, Diancie, Mewtwo
+        // Legends Z-A Specific Rules (Corrected Indices)
+        const NO_ALPHA_IDS = [228, 229, 230, 231, 232]; 
 
         const POKEMON_NAMES = [
             "Chikorita", "Bayleef", "Meganium", "Tepig", "Pignite", "Emboar", "Totodile", "Croconaw", "Feraligatr", "Fletchling",
@@ -229,7 +229,7 @@
             "Roserade", "Magikarp", "Gyarados", "Binacle", "Barbaracle", "Staryu", "Starmie", "Flabébé", "Floette", "Florges",
             "Skiddo", "Gogoat", "Espurr", "Meowstic", "Litleo", "Pyroar", "Pancham", "Pangoro", "Trubbish", "Garbodor",
             "Dedenne", "Pichu", "Pikachu", "Raichu", "Cleffa", "Clefairy", "Clefable", "Spinarak", "Ariados", "Ekans",
-            "Arbok", "Abra", "Kadabra", "Alakazam", "Haunter", "Gengar", "Gastly", "Venipede", "Whirlipede", "Scolipede",
+            "Arbok", "Abra", "Kadabra", "Alakazam", "Gastly", "Haunter", "Gengar", "Venipede", "Whirlipede", "Scolipede",
             "Honedge", "Doublade", "Aegislash", "Bellsprout", "Weepinbell", "Victreebel", "Pansage", "Simisage", "Pansear", "Simisear",
             "Panpour", "Simipour", "Meditite", "Medicham", "Electrike", "Manectric", "Ralts", "Kirlia", "Gardevoir", "Gallade",
             "Houndour", "Houndoom", "Swablu", "Altaria", "Audino", "Spritzee", "Aromatisse", "Swirlix", "Slurpuff", "Eevee",
@@ -250,18 +250,30 @@
         ];
 
         const NATIONAL_IDS = [
-            152, 153, 154, 498, 499, 500, 158, 159, 160, 661, 662, 663, 659, 660, 664, 665, 666, 13, 14, 15,
-            16, 17, 18, 179, 180, 181, 504, 505, 406, 315, 407, 129, 130, 688, 689, 120, 121, 669, 670, 671,
-            672, 673, 677, 678, 667, 668, 674, 675, 568, 569, 702, 172, 25, 26, 173, 35, 36, 167, 168, 23,
-            24, 63, 64, 65, 92, 93, 94, 543, 544, 545, 679, 680, 681, 69, 70, 71, 511, 512, 513, 514,
-            515, 516, 307, 308, 309, 310, 280, 281, 282, 475, 228, 229, 333, 334, 531, 682, 683, 684, 685, 133,
-            134, 135, 136, 196, 197, 470, 471, 700, 427, 428, 353, 354, 582, 583, 584, 322, 323, 449, 450, 529,
-            530, 551, 552, 553, 66, 67, 68, 443, 444, 445, 703, 302, 303, 359, 447, 448, 79, 80, 199, 318,
-            319, 602, 603, 604, 147, 148, 149, 1, 2, 3, 4, 5, 6, 7, 8, 9, 618, 676, 686, 687,
-            690, 691, 692, 693, 704, 705, 706, 225, 361, 362, 478, 459, 460, 712, 713, 123, 212, 127, 214, 587,
-            701, 708, 709, 559, 560, 714, 715, 707, 607, 608, 609, 142, 696, 697, 698, 699, 95, 208, 304, 305,
-            306, 694, 695, 710, 711, 246, 247, 248, 656, 657, 658, 870, 650, 651, 652, 227, 653, 654, 655, 371,
-            372, 373, 115, 780, 374, 375, 376, 716, 717, 718, 719, 150
+            152, 153, 154, 498, 499, 500, 158, 159, 160, 661,
+            662, 663, 659, 660, 664, 665, 666, 13, 14, 15,
+            16, 17, 18, 179, 180, 181, 504, 505, 406, 315,
+            407, 129, 130, 688, 689, 120, 121, 669, 670, 671,
+            672, 673, 677, 678, 667, 668, 674, 675, 568, 569,
+            702, 172, 25, 26, 173, 35, 36, 167, 168, 23,
+            24, 63, 64, 65, 92, 93, 94, 543, 544, 545,
+            679, 680, 681, 69, 70, 71, 511, 512, 513, 514,
+            515, 516, 307, 308, 309, 310, 280, 281, 282, 475,
+            228, 229, 333, 334, 531, 682, 683, 684, 685, 133,
+            134, 135, 136, 196, 197, 470, 471, 700, 427, 428,
+            353, 354, 582, 583, 584, 322, 323, 449, 450, 529,
+            530, 551, 552, 553, 66, 67, 68, 443, 444, 445,
+            703, 302, 303, 359, 447, 448, 79, 80, 199, 318,
+            319, 602, 603, 604, 147, 148, 149, 1, 2, 3,
+            4, 5, 6, 7, 8, 9, 618, 676, 686, 687,
+            690, 691, 692, 693, 704, 705, 706, 225, 361, 362,
+            478, 459, 460, 712, 713, 123, 212, 127, 214, 587,
+            701, 708, 709, 559, 560, 714, 715, 707, 607, 608,
+            609, 142, 696, 697, 698, 699, 95, 208, 304, 305,
+            306, 694, 695, 710, 711, 246, 247, 248, 656, 657,
+            658, 870, 650, 651, 652, 227, 653, 654, 655, 371,
+            372, 373, 115, 780, 374, 375, 376, 716, 717, 718,
+            719, 150
         ];
 
         const POKEMON_TYPES = [
@@ -291,7 +303,6 @@
             "fairy", "psychic"
         ];
 
-        // Building Mega Map based on User's provided list
         const MEGA_LIST_NAMES = [
             "Venusaur", "Charizard", "Blastoise", "Alakazam", "Gengar", "Kangaskhan", "Pinsir", "Gyarados", "Aerodactyl", "Mewtwo",
             "Ampharos", "Scizor", "Heracross", "Houndoom", "Tyranitar", "Gardevoir", "Mawile", "Aggron", "Medicham", "Manectric",
@@ -398,49 +409,6 @@
             }
         }
 
-        function showMissing(category) {
-            const modal = document.getElementById('missing-modal');
-            const title = document.getElementById('modal-title');
-            const content = document.getElementById('modal-content');
-            modal.classList.remove('hidden');
-            content.innerHTML = '';
-            let missingItems = [];
-            let catTitle = category === 'reg' ? "Missing: Registered Dex" : category === 'living' ? "Missing: Living Dex" : category === 'alpha' ? "Missing: Alpha Specimens" : "Missing: Mega Forms";
-            title.innerText = catTitle;
-            for (let i = 1; i <= TOTAL_PKMN; i++) {
-                const name = POKEMON_NAMES[i - 1];
-                const type = POKEMON_TYPES[i - 1];
-                if (category !== 'mega') {
-                    if (category === 'alpha' && NO_ALPHA_IDS.includes(i)) continue;
-                    const cb = document.getElementById(`${category}-${i}`);
-                    if (cb && !cb.checked) missingItems.push({ id: i, name: name, type: type });
-                } else {
-                    const megaCount = MEGA_ELITE[i] || 0;
-                    if (megaCount === 1) {
-                        const cb = document.getElementById(`mega-${i}-0`);
-                        if (cb && !cb.checked) missingItems.push({ id: i, name: `Mega ${name}`, type: type });
-                    } else if (megaCount === 2) {
-                        const cbX = document.getElementById(`mega-${i}-0`);
-                        const cbY = document.getElementById(`mega-${i}-1`);
-                        if (cbX && !cbX.checked) missingItems.push({ id: i, name: `Mega ${name} X`, type: type });
-                        if (cbY && !cbY.checked) missingItems.push({ id: i, name: `Mega ${name} Y`, type: type });
-                    }
-                }
-            }
-            if (missingItems.length === 0) {
-                content.innerHTML = `<div class="col-span-full py-20 text-center font-black text-emerald-400 uppercase tracking-widest text-xl animate-pulse">Category Complete!</div>`;
-            } else {
-                missingItems.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = `p-3 rounded-xl border-2 type-${item.type} bg-opacity-40 flex items-center gap-3`;
-                    div.innerHTML = `<span class="text-[10px] font-black text-white/40">#${String(item.id).padStart(3, '0')}</span><span class="text-sm font-bold text-white">${item.name}</span>`;
-                    content.appendChild(div);
-                });
-            }
-        }
-
-        function closeModal() { document.getElementById('missing-modal').classList.add('hidden'); }
-
         function updateStats(showFeedback = true) {
             const r = document.querySelectorAll('.btn-reg input:checked').length;
             const l = document.querySelectorAll('.btn-living input:checked').length;
@@ -460,7 +428,6 @@
             const megaPercent = TOTAL_MEGAS > 0 ? (m / TOTAL_MEGAS * 100) : 0;
             document.getElementById('mega-bar').style.width = megaPercent + '%';
             
-            // Individual Pokémon completion check
             for (let i = 1; i <= TOTAL_PKMN; i++) {
                 const cell = document.getElementById(`pkmn-cell-${i}`);
                 const badge = document.getElementById(`pkmn-complete-${i}`);
@@ -477,7 +444,6 @@
                 }
             }
 
-            // Box Header completion check
             const totalBoxes = Math.ceil(TOTAL_PKMN / PKMN_PER_BOX);
             for (let b = 1; b <= totalBoxes; b++) {
                 const boxGrid = document.getElementById(`box-grid-${b}`);
@@ -518,13 +484,12 @@
         function resetTracker() {
             if (confirm("SYSTEM OVERRIDE: Clear all saved data?")) {
                 localStorage.removeItem(STORAGE_KEY);
-                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
                 updateStats(false);
             }
         }
 
         document.addEventListener('change', (e) => { if (e.target.type === 'checkbox') updateStats(true); });
-        window.onclick = function(e) { if (e.target == document.getElementById('missing-modal')) closeModal(); }
         init();
     </script>
 </body>
