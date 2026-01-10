@@ -219,7 +219,7 @@
         const TOTAL_PKMN = 232;
         const PKMN_PER_BOX = 30;
         
-        // Legends Z-A Specific Rules
+        // Legends Z-A Specific Rules (Corrected Indices for legends)
         const NO_ALPHA_IDS = [228, 229, 230, 231, 232]; 
 
         const POKEMON_NAMES = [
@@ -229,7 +229,7 @@
             "Roserade", "Magikarp", "Gyarados", "Binacle", "Barbaracle", "Staryu", "Starmie", "Flabébé", "Floette", "Florges",
             "Skiddo", "Gogoat", "Espurr", "Meowstic", "Litleo", "Pyroar", "Pancham", "Pangoro", "Trubbish", "Garbodor",
             "Dedenne", "Pichu", "Pikachu", "Raichu", "Cleffa", "Clefairy", "Clefable", "Spinarak", "Ariados", "Ekans",
-            "Arbok", "Abra", "Kadabra", "Alakazam", "Haunter", "Gengar", "Venipede", "Whirlipede", "Scolipede",
+            "Arbok", "Abra", "Kadabra", "Alakazam", "Gastly", "Haunter", "Gengar", "Venipede", "Whirlipede", "Scolipede",
             "Honedge", "Doublade", "Aegislash", "Bellsprout", "Weepinbell", "Victreebel", "Pansage", "Simisage", "Pansear", "Simisear",
             "Panpour", "Simipour", "Meditite", "Medicham", "Electrike", "Manectric", "Ralts", "Kirlia", "Gardevoir", "Gallade",
             "Houndour", "Houndoom", "Swablu", "Altaria", "Audino", "Spritzee", "Aromatisse", "Swirlix", "Slurpuff", "Eevee",
@@ -322,7 +322,6 @@
         });
 
         const TOTAL_MEGAS = Object.values(MEGA_ELITE).reduce((a, b) => a + b, 0);
-
         const container = document.getElementById('pokedex-container');
         const saveStatusEl = document.getElementById('save-status');
 
@@ -527,7 +526,7 @@
         function resetTracker() {
             if (confirm("SYSTEM OVERRIDE: Clear all saved data?")) {
                 localStorage.removeItem(STORAGE_KEY);
-                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
                 updateStats(false);
             }
         }
