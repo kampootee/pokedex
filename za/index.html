@@ -138,64 +138,58 @@
 </head>
 <body class="min-h-screen pb-20">
 
-    <header class="sticky-header sticky top-0 z-50 px-4 py-6 mb-10">
-        <div class="max-w-[1700px] mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                <div class="flex flex-wrap items-center gap-4">
-                    <h1 class="text-3xl font-black bg-gradient-to-r from-blue-400 via-white to-red-500 bg-clip-text text-transparent uppercase tracking-tighter">
-                        Legends Z-A Tracker
+    <header class="sticky-header sticky top-0 z-50 px-2 py-2 md:px-4 md:py-4 border-b border-slate-800">
+        <div class="max-w-[1700px] mx-auto flex flex-col gap-2">
+            <!-- Top bar: Title and Link -->
+            <div class="flex justify-between items-center px-1">
+                <div class="flex items-center gap-3">
+                    <h1 class="text-lg md:text-2xl font-black bg-gradient-to-r from-blue-400 via-white to-red-500 bg-clip-text text-transparent uppercase tracking-tighter">
+                        LEGENDS Z-A TRACKER
                     </h1>
-                    <a href="https://example.com/dlc1" target="_blank" class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter hover:bg-slate-200 transition-all shadow-lg active:scale-95">
-                        DLC1 Pokédex
+                    <a href="https://example.com/dlc1" target="_blank" class="bg-white text-slate-900 px-2 py-0.5 rounded-lg font-black text-[10px] uppercase tracking-tighter hover:bg-slate-200 transition-all shadow-lg">
+                        DLC1
                     </a>
                 </div>
-                <div id="save-status" class="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2 md:mt-0 transition-opacity opacity-0">
-                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>Synced to Browser
+                <div id="save-status" class="text-[8px] font-black uppercase tracking-widest text-slate-500 transition-opacity opacity-0">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1"></span>Saved
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                <div onclick="showMissing('reg')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-blue-500/20 shadow-lg hover:border-blue-500/5 transition-all">
-                    <div class="flex justify-between items-end mb-2">
-                        <div><span class="text-[9px] font-black text-blue-400 uppercase tracking-widest block mb-0.5">Pokédex</span><span class="text-sm font-bold text-white uppercase tracking-tight">Registered</span></div>
-                        <span class="text-xl font-black text-shadow text-blue-400" id="reg-stats">0 / 232</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="reg-bar" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
-                    <div class="mt-2 text-[8px] font-black text-blue-400/30 group-hover:text-blue-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
+            <!-- Compact Stat Grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                <!-- Registered -->
+                <div onclick="showMissing('reg')" class="cursor-pointer bg-slate-900/60 p-2 md:p-3 rounded-xl border border-blue-500/20 hover:bg-slate-800/80 transition-all flex flex-col items-center justify-center group">
+                    <span class="text-[8px] font-black text-blue-400 uppercase tracking-widest mb-0.5">Pokédex</span>
+                    <span class="text-sm md:text-lg font-black text-white" id="reg-stats">0/232</span>
+                    <span class="text-[7px] font-bold text-blue-400/40 uppercase mt-0.5 group-hover:text-blue-400 transition-colors tracking-tighter">View Missing ➔</span>
                 </div>
 
-                <div onclick="showMissing('living')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-amber-500/20 shadow-lg hover:border-amber-500/5 transition-all">
-                    <div class="flex justify-between items-end mb-2">
-                        <div><span class="text-[9px] font-black text-amber-400 uppercase tracking-widest block mb-0.5">Inventory</span><span class="text-sm font-bold text-white uppercase tracking-tight">Living Dex</span></div>
-                        <span class="text-xl font-black text-shadow text-amber-400" id="living-stats">0 / 232</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="living-bar" class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
-                    <div class="mt-2 text-[8px] font-black text-amber-400/30 group-hover:text-amber-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
+                <!-- Living -->
+                <div onclick="showMissing('living')" class="cursor-pointer bg-slate-900/60 p-2 md:p-3 rounded-xl border border-amber-500/20 hover:bg-slate-800/80 transition-all flex flex-col items-center justify-center group">
+                    <span class="text-[8px] font-black text-amber-400 uppercase tracking-widest mb-0.5">Living</span>
+                    <span class="text-sm md:text-lg font-black text-white" id="living-stats">0/232</span>
+                    <span class="text-[7px] font-bold text-amber-400/40 uppercase mt-0.5 group-hover:text-amber-400 transition-colors tracking-tighter">View Missing ➔</span>
                 </div>
 
-                <div onclick="showMissing('alpha')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-red-500/20 shadow-lg hover:border-red-500/5 transition-all">
-                    <div class="flex justify-between items-end mb-2">
-                        <div><span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-0.5">Specimen</span><span class="text-sm font-bold text-white uppercase tracking-tight">Alpha</span></div>
-                        <span class="text-xl font-black text-shadow text-red-400" id="alpha-stats">0 / 232</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="alpha-bar" class="bg-gradient-to-r from-red-600 to-red-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
-                    <div class="mt-2 text-[8px] font-black text-red-400/30 group-hover:text-red-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
+                <!-- Alpha -->
+                <div onclick="showMissing('alpha')" class="cursor-pointer bg-slate-900/60 p-2 md:p-3 rounded-xl border border-red-500/20 hover:bg-slate-800/80 transition-all flex flex-col items-center justify-center group">
+                    <span class="text-[8px] font-black text-red-400 uppercase tracking-widest mb-0.5">Alpha</span>
+                    <span class="text-sm md:text-lg font-black text-white" id="alpha-stats">0/232</span>
+                    <span class="text-[7px] font-bold text-red-400/40 uppercase mt-0.5 group-hover:text-red-400 transition-colors tracking-tighter">View Missing ➔</span>
                 </div>
 
-                <div onclick="showMissing('mega')" class="group cursor-pointer bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/20 shadow-lg hover:border-emerald-500/5 transition-all">
-                    <div class="flex justify-between items-end mb-2">
-                        <div><span class="text-[9px] font-black text-emerald-400 uppercase tracking-widest block mb-0.5">Evolution</span><span class="text-sm font-bold text-white uppercase tracking-tight">Mega Forms</span></div>
-                        <span class="text-xl font-black text-shadow text-emerald-400" id="mega-stats">0 / 0</span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div id="mega-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 0%"></div></div>
-                    <div class="mt-2 text-[8px] font-black text-emerald-400/30 group-hover:text-emerald-400/70 uppercase tracking-widest text-right italic transition-colors">View Missing ➔</div>
+                <!-- Mega -->
+                <div onclick="showMissing('mega')" class="cursor-pointer bg-slate-900/60 p-2 md:p-3 rounded-xl border border-emerald-500/20 hover:bg-slate-800/80 transition-all flex flex-col items-center justify-center group">
+                    <span class="text-[8px] font-black text-emerald-400 uppercase tracking-widest mb-0.5">Mega</span>
+                    <span class="text-sm md:text-lg font-black text-white" id="mega-stats">0/0</span>
+                    <span class="text-[7px] font-bold text-emerald-400/40 uppercase mt-0.5 group-hover:text-emerald-400 transition-colors tracking-tighter">View Missing ➔</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-[1700px] mx-auto px-6">
-        <div id="pokedex-container" class="flex flex-col gap-16 items-center"></div>
+    <main class="max-w-[1700px] mx-auto px-4 md:px-6 pt-6">
+        <div id="pokedex-container" class="flex flex-col gap-10 md:gap-16 items-center"></div>
         <div class="mt-20 flex flex-col items-center gap-4 text-center">
             <button onclick="resetTracker()" class="px-10 py-4 bg-slate-900 hover:bg-red-600 hover:text-white text-slate-500 border border-slate-800 rounded-2xl transition-all duration-300 text-sm font-black uppercase tracking-widest">
                 System Wipe: Clear All Data
@@ -219,7 +213,7 @@
         const TOTAL_PKMN = 232;
         const PKMN_PER_BOX = 30;
         
-        // Legends Z-A Specific Rules (Corrected Indices for legends)
+        // Legends Z-A Specific Rules
         const NO_ALPHA_IDS = [228, 229, 230, 231, 232]; 
 
         const POKEMON_NAMES = [
@@ -254,7 +248,7 @@
             662, 663, 659, 660, 664, 665, 666, 13, 14, 15,
             16, 17, 18, 179, 180, 181, 504, 505, 406, 315,
             407, 129, 130, 688, 689, 120, 121, 669, 670, 671,
-            672, 673, 677, 678, 667, 668, 674, 675, 568, 569,
+            672, 673, 673, 677, 678, 667, 668, 674, 675, 568, 569,
             702, 172, 25, 26, 173, 35, 36, 167, 168, 23,
             24, 63, 64, 65, 92, 93, 94, 543, 544, 545,
             679, 680, 681, 69, 70, 71, 511, 512, 513, 514,
@@ -276,31 +270,41 @@
             719, 150
         ];
 
+        // Correct Type Badges
+        const TYPE_COLORS = {
+            grass: "#064e3b", fire: "#7f1d1d", water: "#1e3a8a",
+            bug: "#365314", normal: "#334155", poison: "#4c1d95",
+            electric: "#713f12", ground: "#451a03", fairy: "#701a75",
+            fighting: "#7c2d12", psychic: "#831843", rock: "#422006",
+            ghost: "#2e1065", ice: "#164e63", dragon: "#1e1b4b",
+            steel: "#1e293b", dark: "#475569", flying: "#312e81"
+        };
+
         const POKEMON_TYPES = [
-            "grass", "grass", "grass", "fire", "fire", "fire", "water", "water", "water", "normal",
-            "fire", "fire", "normal", "normal", "bug", "bug", "bug", "bug", "bug", "bug",
-            "normal", "normal", "normal", "electric", "electric", "electric", "normal", "normal", "grass", "grass",
-            "grass", "water", "water", "rock", "rock", "water", "water", "fairy", "fairy", "fairy",
-            "grass", "grass", "psychic", "psychic", "fire", "fire", "fighting", "fighting", "poison", "poison",
-            "electric", "electric", "electric", "electric", "fairy", "fairy", "fairy", "bug", "bug", "poison",
-            "poison", "psychic", "psychic", "psychic", "ghost", "ghost", "ghost", "bug", "bug", "bug",
-            "steel", "steel", "steel", "grass", "grass", "grass", "grass", "grass", "fire", "fire",
-            "water", "water", "fighting", "fighting", "electric", "electric", "psychic", "psychic", "psychic", "psychic",
-            "dark", "dark", "dragon", "dragon", "normal", "fairy", "fairy", "fairy", "fairy", "normal",
-            "water", "electric", "fire", "psychic", "dark", "grass", "ice", "fairy", "normal", "normal",
-            "ghost", "ghost", "ice", "ice", "ice", "fire", "fire", "ground", "ground", "ground",
-            "ground", "ground", "ground", "ground", "fighting", "fighting", "fighting", "dragon", "dragon", "dragon",
-            "rock", "dark", "steel", "dark", "fighting", "fighting", "water", "water", "water", "water",
-            "water", "electric", "electric", "electric", "dragon", "dragon", "dragon", "grass", "grass", "grass",
-            "fire", "fire", "fire", "water", "water", "water", "ground", "normal", "dark", "dark",
-            "poison", "poison", "water", "water", "dragon", "dragon", "dragon", "ice", "ice", "ice",
-            "ice", "ice", "ice", "ice", "ice", "bug", "bug", "bug", "bug", "electric",
-            "fighting", "ghost", "ghost", "dark", "dark", "dragon", "dragon", "steel", "ghost", "ghost",
-            "ghost", "rock", "rock", "rock", "rock", "rock", "rock", "rock", "steel", "steel",
-            "steel", "electric", "electric", "ghost", "ghost", "rock", "rock", "rock", "water", "water",
-            "water", "fighting", "grass", "grass", "grass", "steel", "fire", "fire", "fire", "dragon",
-            "dragon", "dragon", "normal", "normal", "steel", "steel", "steel", "fairy", "dark", "dragon",
-            "fairy", "psychic"
+            ["grass"], ["grass"], ["grass"], ["fire"], ["fire", "fighting"], ["fire", "fighting"], ["water"], ["water"], ["water"], ["normal", "flying"],
+            ["fire", "flying"], ["fire", "flying"], ["normal"], ["normal", "ground"], ["bug"], ["bug"], ["bug", "flying"], ["bug", "poison"], ["bug", "poison"], ["bug", "poison"],
+            ["normal", "flying"], ["normal", "flying"], ["normal", "flying"], ["electric"], ["electric"], ["electric", "dragon"], ["normal"], ["normal"], ["grass", "poison"], ["grass", "poison"],
+            ["grass", "poison"], ["water"], ["water", "flying"], ["rock", "water"], ["rock", "water"], ["water"], ["water", "psychic"], ["fairy"], ["fairy"], ["fairy"],
+            ["grass"], ["grass"], ["psychic"], ["psychic"], ["fire"], ["fire"], ["fighting"], ["fighting", "dark"], ["poison"], ["poison"],
+            ["electric", "fairy"], ["electric"], ["electric"], ["electric"], ["fairy"], ["fairy"], ["fairy"], ["bug", "poison"], ["bug", "poison"], ["poison"],
+            ["poison"], ["psychic"], ["psychic"], ["psychic"], ["ghost", "poison"], ["ghost", "poison"], ["ghost", "poison"], ["bug", "poison"], ["bug", "poison"], ["bug", "poison"],
+            ["steel", "ghost"], ["steel", "ghost"], ["steel", "ghost"], ["grass", "poison"], ["grass", "poison"], ["grass", "poison"], ["grass"], ["grass"], ["fire"], ["fire"],
+            ["water"], ["water"], ["fighting", "psychic"], ["fighting", "psychic"], ["electric"], ["electric"], ["psychic"], ["psychic"], ["psychic"], ["psychic", "fighting"],
+            ["dark", "fire"], ["dark", "fire"], ["dragon", "flying"], ["dragon", "flying"], ["normal"], ["fairy"], ["fairy"], ["fairy"], ["fairy"], ["normal"],
+            ["water"], ["electric"], ["fire"], ["psychic"], ["dark"], ["grass"], ["ice"], ["fairy"], ["normal"], ["normal"],
+            ["ghost"], ["ghost"], ["ice"], ["ice"], ["ice"], ["fire", "ground"], ["fire", "ground"], ["ground"], ["ground"], ["steel", "ground"],
+            ["steel", "ground"], ["ground", "dark"], ["ground", "dark"], ["ground", "dark"], ["fighting"], ["fighting"], ["fighting"], ["dragon", "ground"], ["dragon", "ground"], ["dragon", "ground"],
+            ["rock", "fairy"], ["dark", "ghost"], ["steel", "fairy"], ["dark"], ["fighting"], ["fighting", "steel"], ["water"], ["water", "psychic"], ["water", "psychic"], ["water", "dark"],
+            ["water", "dark"], ["electric"], ["electric"], ["electric"], ["dragon"], ["dragon"], ["dragon", "flying"], ["grass", "poison"], ["grass", "poison"], ["grass", "poison"],
+            ["fire"], ["fire"], ["fire", "flying"], ["water"], ["water"], ["water"], ["ground", "electric"], ["normal"], ["dark", "psychic"], ["dark", "psychic"],
+            ["poison", "dragon"], ["poison", "dragon"], ["water"], ["water"], ["dragon"], ["dragon"], ["dragon"], ["ice", "flying"], ["ice"], ["ice"],
+            ["ice", "ghost"], ["grass", "ice"], ["grass", "ice"], ["ice"], ["ice"], ["bug", "flying"], ["bug", "steel"], ["bug"], ["bug", "fighting"], ["electric", "flying"],
+            ["fighting", "flying"], ["ghost", "grass"], ["ghost", "grass"], ["dark", "fighting"], ["dark", "fighting"], ["flying", "dragon"], ["flying", "dragon"], ["steel", "fairy"], ["ghost", "fire"], ["ghost", "fire"],
+            ["ghost", "fire"], ["rock", "flying"], ["rock", "dragon"], ["rock", "dragon"], ["rock", "ice"], ["rock", "ice"], ["rock", "ground"], ["steel", "ground"], ["rock", "steel"], ["rock", "steel"],
+            ["rock", "steel"], ["electric", "normal"], ["electric", "normal"], ["ghost", "grass"], ["ghost", "grass"], ["rock", "ground"], ["rock", "ground"], ["rock", "dark"], ["water"], ["water"],
+            ["water", "dark"], ["fighting"], ["grass"], ["grass"], ["grass", "fighting"], ["steel", "flying"], ["fire"], ["fire"], ["fire", "psychic"], ["dragon"],
+            ["dragon"], ["dragon", "flying"], ["normal"], ["normal", "dragon"], ["steel", "psychic"], ["steel", "psychic"], ["steel", "psychic"], ["fairy"], ["dark", "flying"], ["dragon", "ground"],
+            ["fairy", "rock"], ["psychic"]
         ];
 
         const MEGA_LIST_NAMES = [
@@ -340,17 +344,17 @@
 
         function createBox(number, start, end) {
             const boxCard = document.createElement('div');
-            boxCard.className = 'box-card p-8 rounded-[2.5rem] w-full max-w-[1400px] relative overflow-hidden';
+            boxCard.className = 'box-card p-4 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] w-full max-w-[1400px] relative overflow-hidden';
             boxCard.id = `box-container-${number}`;
             
             boxCard.innerHTML = `
-                <div class="flex items-baseline justify-between mb-8 border-b border-slate-700/50 pb-5">
-                    <div class="flex items-baseline gap-4">
-                        <span class="bg-white text-slate-900 px-4 py-1 rounded-xl font-black text-sm uppercase tracking-tighter">Box ${number}</span>
-                        <span class="text-white font-black text-xl tracking-tight">#${String(start).padStart(3, '0')} — #${String(end).padStart(3, '0')}</span>
+                <div class="flex items-baseline justify-between mb-4 md:mb-8 border-b border-slate-700/50 pb-3 md:pb-5">
+                    <div class="flex items-baseline gap-2 md:gap-4">
+                        <span class="bg-white text-slate-900 px-3 py-0.5 rounded-lg font-black text-[10px] md:text-sm uppercase tracking-tighter">Box ${number}</span>
+                        <span class="text-white font-black text-sm md:text-xl tracking-tight">#${String(start).padStart(3, '0')}—#${String(end).padStart(3, '0')}</span>
                     </div>
-                    <div id="box-complete-${number}" class="hidden box-complete-badge bg-emerald-500 text-white px-4 py-1 rounded-xl font-black text-sm uppercase tracking-widest shadow-lg shadow-emerald-500/20">
-                        Box Complete!
+                    <div id="box-complete-${number}" class="hidden box-complete-badge bg-emerald-500 text-white px-3 py-0.5 rounded-lg font-black text-[10px] md:text-sm uppercase tracking-widest shadow-lg shadow-emerald-500/20">
+                        Complete!
                     </div>
                 </div>
                 <div class="pokemon-grid" id="box-grid-${number}"></div>
@@ -360,13 +364,14 @@
 
             for (let i = start; i <= end; i++) {
                 const name = POKEMON_NAMES[i - 1];
-                const type = POKEMON_TYPES[i - 1];
+                const types = POKEMON_TYPES[i - 1] || ["normal"];
+                const primaryType = types[0];
                 const natId = NATIONAL_IDS[i - 1];
                 const megaCount = MEGA_ELITE[i] || 0;
                 
                 const item = document.createElement('div');
                 item.id = `pkmn-cell-${i}`;
-                item.className = `group pkmn-cell flex flex-col p-4 rounded-2xl border-2 transition-all duration-300 type-${type}`;
+                item.className = `group pkmn-cell flex flex-col p-3 md:p-4 rounded-xl md:rounded-2xl border-2 transition-all duration-300 type-${primaryType}`;
                 item.style.backgroundImage = `url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${natId}.png')`;
 
                 let megaHtml = '';
@@ -385,19 +390,25 @@
                     alphaHtml = `<label class="track-btn btn-alpha"><input type="checkbox" id="alpha-${i}">Alpha</label>`;
                 }
 
+                const typeBadges = types.map(t => {
+                    const color = TYPE_COLORS[t] || "#334155";
+                    return `<span style="background-color: ${color}" class="text-white px-2 py-0.5 rounded-lg font-black text-[9px] uppercase tracking-wide ml-1 shadow-sm border border-white/10">${t}</span>`;
+                }).join('');
+
                 item.innerHTML = `
-                    <div class="flex items-center justify-between mb-2 min-h-[24px]">
-                        <div class="flex items-baseline gap-2">
+                    <div class="flex items-center justify-between mb-2 min-h-[20px]">
+                        <div class="flex items-center gap-1">
                             <span class="text-[10px] font-black text-white/50 tracking-wider text-shadow">#${String(i).padStart(3, '0')}</span>
-                            <span class="pkmn-name text-sm font-bold text-white group-hover:scale-105 transition-transform origin-left text-shadow">${name}</span>
+                            <span class="pkmn-name text-[11px] md:text-sm font-bold text-white group-hover:scale-105 transition-transform origin-left text-shadow">${name}</span>
+                            <div class="flex items-center">${typeBadges}</div>
                         </div>
-                        <div id="pkmn-complete-${i}" class="hidden pkmn-complete-badge bg-emerald-500 text-white w-5 h-5 flex items-center justify-center rounded-full shadow-lg">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <div id="pkmn-complete-${i}" class="hidden pkmn-complete-badge bg-emerald-500 text-white w-4 h-4 md:w-5 md:h-5 flex items-center justify-center rounded-full shadow-lg">
+                            <svg class="w-2.5 h-2.5 md:w-3 md:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2 bg-black/40 p-2 rounded-xl border border-white/5 backdrop-blur-sm relative z-10">
+                    <div class="grid grid-cols-2 gap-1 md:gap-2 bg-black/40 p-1 md:p-2 rounded-xl border border-white/5 backdrop-blur-sm relative z-10">
                         <label class="track-btn btn-reg"><input type="checkbox" id="reg-${i}">Registered</label>
                         <label class="track-btn btn-living"><input type="checkbox" id="living-${i}">Living</label>
                         ${alphaHtml}
@@ -415,25 +426,25 @@
             modal.classList.remove('hidden');
             content.innerHTML = '';
             let missingItems = [];
-            let catTitle = category === 'reg' ? "Missing: Registered Dex" : category === 'living' ? "Missing: Living Dex" : category === 'alpha' ? "Missing: Alpha Specimens" : "Missing: Mega Forms";
+            let catTitle = category === 'reg' ? "Missing: Registered" : category === 'living' ? "Missing: Living Dex" : category === 'alpha' ? "Missing: Alpha" : "Missing: Mega Forms";
             title.innerText = catTitle;
             for (let i = 1; i <= TOTAL_PKMN; i++) {
                 const name = POKEMON_NAMES[i - 1];
-                const type = POKEMON_TYPES[i - 1];
+                const types = POKEMON_TYPES[i - 1];
                 if (category !== 'mega') {
                     if (category === 'alpha' && NO_ALPHA_IDS.includes(i)) continue;
                     const cb = document.getElementById(`${category}-${i}`);
-                    if (cb && !cb.checked) missingItems.push({ id: i, name: name, type: type });
+                    if (cb && !cb.checked) missingItems.push({ id: i, name: name, type: types[0] });
                 } else {
                     const megaCount = MEGA_ELITE[i] || 0;
                     if (megaCount === 1) {
                         const cb = document.getElementById(`mega-${i}-0`);
-                        if (cb && !cb.checked) missingItems.push({ id: i, name: `Mega ${name}`, type: type });
+                        if (cb && !cb.checked) missingItems.push({ id: i, name: `Mega ${name}`, type: types[0] });
                     } else if (megaCount === 2) {
                         const cbX = document.getElementById(`mega-${i}-0`);
                         const cbY = document.getElementById(`mega-${i}-1`);
-                        if (cbX && !cbX.checked) missingItems.push({ id: i, name: `Mega ${name} X`, type: type });
-                        if (cbY && !cbY.checked) missingItems.push({ id: i, name: `Mega ${name} Y`, type: type });
+                        if (cbX && !cbX.checked) missingItems.push({ id: i, name: `Mega ${name} X`, type: types[0] });
+                        if (cbY && !cbY.checked) missingItems.push({ id: i, name: `Mega ${name} Y`, type: types[0] });
                     }
                 }
             }
@@ -442,7 +453,9 @@
             } else {
                 missingItems.forEach(item => {
                     const div = document.createElement('div');
-                    div.className = `p-3 rounded-xl border-2 type-${item.type} bg-opacity-40 flex items-center gap-3`;
+                    const color = TYPE_COLORS[item.type] || "#334155";
+                    div.className = `p-3 rounded-xl border-2 border-white/10 flex items-center gap-3`;
+                    div.style.backgroundColor = color;
                     div.innerHTML = `<span class="text-[10px] font-black text-white/40">#${String(item.id).padStart(3, '0')}</span><span class="text-sm font-bold text-white">${item.name}</span>`;
                     content.appendChild(div);
                 });
@@ -458,17 +471,10 @@
             const m = document.querySelectorAll('.btn-mega input:checked').length;
             const alphaTotal = TOTAL_PKMN - NO_ALPHA_IDS.length;
 
-            document.getElementById('reg-stats').innerText = `${r} / ${TOTAL_PKMN}`;
-            document.getElementById('living-stats').innerText = `${l} / ${TOTAL_PKMN}`;
-            document.getElementById('alpha-stats').innerText = `${a} / ${alphaTotal}`;
-            document.getElementById('mega-stats').innerText = `${m} / ${TOTAL_MEGAS}`;
-            
-            document.getElementById('reg-bar').style.width = (r/TOTAL_PKMN*100)+'%';
-            document.getElementById('living-bar').style.width = (l/TOTAL_PKMN*100)+'%';
-            document.getElementById('alpha-bar').style.width = (a/alphaTotal*100)+'%';
-            
-            const megaPercent = TOTAL_MEGAS > 0 ? (m / TOTAL_MEGAS * 100) : 0;
-            document.getElementById('mega-bar').style.width = megaPercent + '%';
+            document.getElementById('reg-stats').innerText = `${r}/${TOTAL_PKMN}`;
+            document.getElementById('living-stats').innerText = `${l}/${TOTAL_PKMN}`;
+            document.getElementById('alpha-stats').innerText = `${a}/${alphaTotal}`;
+            document.getElementById('mega-stats').innerText = `${m}/${TOTAL_MEGAS}`;
             
             for (let i = 1; i <= TOTAL_PKMN; i++) {
                 const cell = document.getElementById(`pkmn-cell-${i}`);
@@ -478,10 +484,10 @@
                     const checked = cell.querySelectorAll('input:checked');
                     if (inputs.length > 0 && inputs.length === checked.length) {
                         badge.classList.remove('hidden');
-                        cell.style.borderColor = 'rgba(16, 185, 129, 0.6)';
+                        cell.style.filter = 'brightness(1.1)';
                     } else {
                         badge.classList.add('hidden');
-                        cell.style.borderColor = '';
+                        cell.style.filter = '';
                     }
                 }
             }
@@ -526,12 +532,25 @@
         function resetTracker() {
             if (confirm("SYSTEM OVERRIDE: Clear all saved data?")) {
                 localStorage.removeItem(STORAGE_KEY);
-                document.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
                 updateStats(false);
             }
         }
 
-        document.addEventListener('change', (e) => { if (e.target.type === 'checkbox') updateStats(true); });
+        document.addEventListener('change', (e) => { 
+            if (e.target.type === 'checkbox') {
+                const idParts = e.target.id.split('-');
+                const type = idParts[0];
+                const pkmnIndex = idParts[1];
+
+                if (e.target.checked && (type === 'living' || type === 'alpha' || type === 'mega')) {
+                    const regBox = document.getElementById(`reg-${pkmnIndex}`);
+                    if (regBox) regBox.checked = true;
+                }
+                updateStats(true); 
+            } 
+        });
+
         window.onclick = function(e) { if (e.target == document.getElementById('missing-modal')) closeModal(); }
         init();
     </script>
