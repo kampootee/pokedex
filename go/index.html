@@ -276,6 +276,13 @@
       719: { type: 'mega', count: 1 }        // Diancie
     };
 
+    // Array of Pokemon IDs that have Gigantamax forms
+    const gmaxForms = [
+      3, 6, 9, 12, 25, 52, 68, 94, 99, 131, 133, 143, 569, 809, 
+      812, 815, 818, 823, 826, 834, 839, 841, 842, 844, 849, 
+      851, 858, 861, 869, 879, 884, 892
+    ];
+
     const formatName = (str) => {
       return str.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
     };
@@ -397,6 +404,14 @@
                   </label>
                 `;
               }
+            } else {
+              html += `<span class="text-gray-700 font-bold">-</span>`;
+            }
+          } else if (col === 'gmax') {
+            // Check if the current Pokemon ID has a G-Max form
+            if (gmaxForms.includes(p.id)) {
+              const isChecked = dbState[p.id][col] ? 'checked' : '';
+              html += `<input type="checkbox" class="poke-checkbox check-blue" data-id="${p.id}" data-col="${col}" ${isChecked}>`;
             } else {
               html += `<span class="text-gray-700 font-bold">-</span>`;
             }
