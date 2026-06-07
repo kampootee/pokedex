@@ -31,7 +31,6 @@
     
     /* --- CUSTOM CHECKBOX STYLING --- */
     input[type="checkbox"] {
-      /* Remove default browser styling */
       appearance: none;
       -webkit-appearance: none;
       
@@ -47,12 +46,10 @@
       margin: 0;
     }
 
-    /* Custom Checkmark Icon using CSS clip-path */
     input[type="checkbox"]::before {
       content: "";
       width: 0.65em;
       height: 0.65em;
-      /* Draws a checkmark shape */
       clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
       transform: scale(0);
       transform-origin: center;
@@ -64,7 +61,6 @@
       transform: scale(1);
     }
 
-    /* Hover effect for unchecked state */
     input[type="checkbox"]:hover {
       border-color: #9ca3af; /* border-gray-400 */
     }
@@ -73,19 +69,19 @@
     input[type="checkbox"].check-blue:checked {
       background-color: #3b82f6;
       border-color: #3b82f6;
-      box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); /* Subtle blue glow */
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); 
     }
     
     input[type="checkbox"].check-red:checked {
       background-color: #ef4444;
       border-color: #ef4444;
-      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); /* Subtle red glow */
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); 
     }
 
     input[type="checkbox"].check-orange:checked {
       background-color: #f97316;
       border-color: #f97316;
-      box-shadow: 0 0 10px rgba(249, 115, 22, 0.4); /* Subtle orange glow */
+      box-shadow: 0 0 10px rgba(249, 115, 22, 0.4); 
     }
     
     /* Table Layout */
@@ -102,7 +98,7 @@
       border-right: none;
     }
     
-    /* Cell Visual States based on Checkboxes */
+    /* Cell Visual States based on Checkboxes (Muted Colors) */
     td.name-cell {
       background-color: #111827; 
     }
@@ -110,33 +106,29 @@
       background-color: rgba(17, 24, 39, 0.5); 
     }
     
-    /* Unchecked Data Cell */
     td.data-cell:has(input[type="checkbox"]:not(:checked)) {
       background-color: #2d1b1e; /* Muted Dark Red */
     }
     
-    /* Checked Data Cell */
     td.data-cell:has(input[type="checkbox"]):not(:has(input[type="checkbox"]:not(:checked))) {
       background-color: #1b2d22; /* Muted Dark Green */
     }
     
-    /* Entire Row Complete -> Name Cell becomes Green */
     tr:has(input[type="checkbox"]):not(:has(input[type="checkbox"]:not(:checked))) td.name-cell {
       background-color: #21382a; /* Muted Completion Green */
     }
 
-    /* Hover overrides to keep row-highlighting interactive */
     tr:hover td.name-cell {
       background-color: #1f2937; 
     }
     tr:hover:has(input[type="checkbox"]):not(:has(input[type="checkbox"]:not(:checked))) td.name-cell {
-      background-color: #2a4534; /* Muted Hover Completion Green */
+      background-color: #2a4534; 
     }
     tr:hover td.data-cell:has(input[type="checkbox"]:not(:checked)) {
-      background-color: #3b2528; /* Muted Hover Red */
+      background-color: #3b2528; 
     }
     tr:hover td.data-cell:has(input[type="checkbox"]):not(:has(input[type="checkbox"]:not(:checked))) {
-      background-color: #243d2e; /* Muted Hover Green */
+      background-color: #243d2e; 
     }
   </style>
 </head>
@@ -195,7 +187,7 @@
   <!-- Main Table Container -->
   <main class="flex-1 overflow-auto relative custom-scrollbar bg-gray-950">
     <table class="w-full text-sm text-left whitespace-nowrap min-w-max">
-      <thead id="table-header" class="bg-gray-800 text-gray-200 sticky top-0 z-30 font-semibold shadow-md border-b border-gray-600">
+      <thead id="table-header" class="bg-gray-800 text-gray-200 sticky top-0 z-20 font-semibold shadow-md border-b border-gray-600">
         <!-- Headers injected via JS -->
       </thead>
       <tbody id="pokedex-body" class="text-gray-200">
@@ -214,7 +206,6 @@
     let pokemonData = [];
     let dbState = {};
 
-    // Definition of our columns with 'special' (Mega/Primal) moved to the end
     const columnsOrder = [
       'reg', 'shiny', 'hundo', 'lucky', 'xxl', 'xxs', 'gmax', 'shadow', 'purified', 'special'
     ];
@@ -239,7 +230,7 @@
       9: { type: 'mega', count: 1 },         // Blastoise
       15: { type: 'mega', count: 1 },        // Beedrill
       18: { type: 'mega', count: 1 },        // Pidgeot
-      26: { type: 'mega', count: 2 },        // Raichu (X/Y as requested)
+      26: { type: 'mega', count: 2 },        // Raichu (X/Y)
       65: { type: 'mega', count: 1 },        // Alakazam
       80: { type: 'mega', count: 1 },        // Slowbro
       94: { type: 'mega', count: 1 },        // Gengar
@@ -285,7 +276,6 @@
       719: { type: 'mega', count: 1 }        // Diancie
     };
 
-    // --- Utility Functions ---
     const formatName = (str) => {
       return str.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
     };
@@ -295,8 +285,8 @@
       renderHeaders();
       
       try {
-        // Fetch up to 1025 to cover up through Gen 9
-        const res = await fetch('https://pokeapi.co/api/v2/pokemon-species?limit=1025');
+        // Fetch up to 1028 to cover up to recent entries
+        const res = await fetch('https://pokeapi.co/api/v2/pokemon-species?limit=1028');
         const data = await res.json();
         
         pokemonData = data.results.map((p, index) => {
@@ -308,14 +298,26 @@
           };
         });
 
-        // Initialize pure in-memory state object for every Pokemon
-        pokemonData.forEach(p => {
-          dbState[p.id] = { 
-            reg: false, shiny: false, hundo: false, lucky: false, 
-            xxl: false, xxs: false, gmax: false, shadow: false, purified: false,
-            mega: false, mega_x: false, mega_y: false, primal: false 
-          };
-        });
+        // Load Saved State from LocalStorage
+        const savedData = localStorage.getItem('goDexState');
+        if (savedData) {
+          dbState = JSON.parse(savedData);
+          // Check for newly added pokemon that might not exist in old saves
+          pokemonData.forEach(p => {
+             if(!dbState[p.id]) {
+                dbState[p.id] = { reg: false, shiny: false, hundo: false, lucky: false, xxl: false, xxs: false, gmax: false, shadow: false, purified: false, mega: false, mega_x: false, mega_y: false, primal: false };
+             }
+          });
+        } else {
+          // Initialize fresh dbState if no save is found
+          pokemonData.forEach(p => {
+            dbState[p.id] = { 
+              reg: false, shiny: false, hundo: false, lucky: false, 
+              xxl: false, xxs: false, gmax: false, shadow: false, purified: false,
+              mega: false, mega_x: false, mega_y: false, primal: false 
+            };
+          });
+        }
 
         renderTable();
       } catch (error) {
@@ -335,7 +337,7 @@
     function renderHeaders() {
       let headerHTML = `
         <tr>
-          <th class="p-3 sticky left-0 z-40 bg-gray-800 shadow-[2px_0_5px_rgba(0,0,0,0.5)] w-[260px]">Pokémon Name</th>
+          <th class="p-3 sticky left-0 z-40 bg-gray-800 shadow-[2px_0_5px_rgba(0,0,0,0.5)] whitespace-nowrap min-w-max pr-8">Pokémon Name</th>
       `;
       columnsOrder.forEach(col => {
         // Give the special column a slightly wider header
@@ -355,11 +357,11 @@
         
         // Sticky left column (Name & Sprite)
         html += `
-          <td class="p-2 sticky left-0 z-10 name-cell shadow-[2px_0_5px_rgba(0,0,0,0.3)] transition-colors duration-300">
-            <div class="flex items-center space-x-3">
+          <td class="p-2 sticky left-0 z-10 name-cell shadow-[2px_0_5px_rgba(0,0,0,0.3)] transition-colors duration-300 whitespace-nowrap min-w-max pr-6">
+            <div class="flex items-center space-x-3 w-max">
               <span class="text-gray-500 font-mono text-xs w-10 text-right shrink-0">#${String(p.id).padStart(4, '0')}</span>
               <img src="${p.sprite}" class="w-10 h-10 object-contain drop-shadow-md shrink-0 bg-gray-800 rounded-full" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\'></svg>'">
-              <span class="font-semibold text-gray-200 tracking-wide truncate w-full">${p.name}</span>
+              <span class="font-semibold text-gray-200 tracking-wide">${p.name}</span>
             </div>
           </td>
         `;
@@ -371,7 +373,6 @@
           if (col === 'special') {
             const sf = specialForms[p.id];
             if (sf) {
-              // Dual Megas (X and Y)
               if (sf.count === 2) {
                 html += `
                   <div class="flex gap-3 justify-center items-center">
@@ -383,17 +384,13 @@
                     </label>
                   </div>
                 `;
-              } 
-              // Primals
-              else if (sf.type === 'primal') {
+              } else if (sf.type === 'primal') {
                 html += `
                   <label class="flex items-center justify-center gap-2 cursor-pointer text-xs font-bold text-orange-400 tracking-wider">
                     Primal <input type="checkbox" class="poke-checkbox check-orange" data-id="${p.id}" data-col="primal" ${dbState[p.id].primal ? 'checked' : ''}>
                   </label>
                 `;
-              } 
-              // Standard Mega
-              else {
+              } else {
                 html += `
                   <label class="flex items-center justify-center gap-2 cursor-pointer text-xs font-semibold text-gray-300">
                     Mega <input type="checkbox" class="poke-checkbox check-blue" data-id="${p.id}" data-col="mega" ${dbState[p.id].mega ? 'checked' : ''}>
@@ -401,15 +398,11 @@
                 `;
               }
             } else {
-              // Pokemon does not have a Mega/Primal
               html += `<span class="text-gray-700 font-bold">-</span>`;
             }
           } else {
-            // Standard Checkbox for reg, shiny, hundo, etc.
             const isChecked = dbState[p.id][col] ? 'checked' : '';
-            html += `
-              <input type="checkbox" class="poke-checkbox check-blue" data-id="${p.id}" data-col="${col}" ${isChecked}>
-            `;
+            html += `<input type="checkbox" class="poke-checkbox check-blue" data-id="${p.id}" data-col="${col}" ${isChecked}>`;
           }
           
           html += `</td>`;
@@ -423,12 +416,14 @@
 
     // --- Interactive Logic ---
     
-    // Listen for changes on checkboxes
+    // Listen for changes and save immediately to LocalStorage
     document.getElementById('pokedex-body').addEventListener('change', (e) => {
       if (e.target.classList.contains('poke-checkbox')) {
         const id = e.target.getAttribute('data-id');
         const col = e.target.getAttribute('data-col');
+        
         dbState[id][col] = e.target.checked;
+        localStorage.setItem('goDexState', JSON.stringify(dbState));
       }
     });
 
@@ -450,9 +445,8 @@
     // --- Search String Generator Logic ---
     document.getElementById('btn-export').addEventListener('click', () => {
       const col = document.getElementById('export-col').value;
-      const state = document.getElementById('export-state').value === 'true'; // true: checked, false: unchecked
+      const state = document.getElementById('export-state').value === 'true';
       
-      // Map columns to their respective PoGo search prefixes
       const searchPrefixes = {
         reg: '',
         shiny: 'shiny&',
@@ -468,7 +462,6 @@
       let ids = [];
       for (const id in dbState) {
         if (dbState[id][col] === state) {
-          // Pad ID to 3 digits minimum for a clean string (e.g. 001, 004)
           ids.push(String(id).padStart(3, '0'));
         }
       }
@@ -476,7 +469,6 @@
       const btn = document.getElementById('btn-export');
       const originalText = '<i class="fa-solid fa-copy"></i> Copy String';
       
-      // Handle empty results
       if (ids.length === 0) {
         btn.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> No Matches`;
         btn.classList.replace('bg-blue-600', 'bg-red-600');
@@ -489,11 +481,9 @@
         return;
       }
       
-      // Construct the final copyable string
       const prefix = searchPrefixes[col] || '';
       const searchString = `${prefix}${ids.join(',')}`;
       
-      // Execute copy to clipboard
       const el = document.createElement('textarea');
       el.value = searchString;
       document.body.appendChild(el);
@@ -501,7 +491,6 @@
       document.execCommand('copy');
       document.body.removeChild(el);
       
-      // Success feedback animation
       btn.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
       btn.classList.replace('bg-blue-600', 'bg-green-600');
       btn.classList.replace('hover:bg-blue-500', 'hover:bg-green-500');
