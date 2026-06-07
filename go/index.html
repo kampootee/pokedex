@@ -337,7 +337,7 @@
     function renderHeaders() {
       let headerHTML = `
         <tr>
-          <th class="p-3 sticky left-0 z-40 bg-gray-800 shadow-[2px_0_5px_rgba(0,0,0,0.5)] whitespace-nowrap min-w-max pr-8">Pokémon Name</th>
+          <th class="p-3 sticky left-0 z-40 bg-gray-800 shadow-[2px_0_5px_rgba(0,0,0,0.5)] w-[220px] min-w-[220px] max-w-[220px]">Pokémon Name</th>
       `;
       columnsOrder.forEach(col => {
         // Give the special column a slightly wider header
@@ -357,11 +357,11 @@
         
         // Sticky left column (Name & Sprite)
         html += `
-          <td class="p-2 sticky left-0 z-10 name-cell shadow-[2px_0_5px_rgba(0,0,0,0.3)] transition-colors duration-300 whitespace-nowrap min-w-max pr-6">
-            <div class="flex items-center space-x-3 w-max">
-              <span class="text-gray-500 font-mono text-xs w-10 text-right shrink-0">#${String(p.id).padStart(4, '0')}</span>
-              <img src="${p.sprite}" class="w-10 h-10 object-contain drop-shadow-md shrink-0 bg-gray-800 rounded-full" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\'></svg>'">
-              <span class="font-semibold text-gray-200 tracking-wide">${p.name}</span>
+          <td class="p-2 sticky left-0 z-10 name-cell shadow-[2px_0_5px_rgba(0,0,0,0.3)] transition-colors duration-300 w-[220px] min-w-[220px] max-w-[220px]">
+            <div class="flex items-center space-x-2">
+              <span class="text-gray-500 font-mono text-xs w-9 text-right shrink-0">#${String(p.id).padStart(4, '0')}</span>
+              <img src="${p.sprite}" class="w-9 h-9 object-contain drop-shadow-md shrink-0 bg-gray-800 rounded-full" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\'></svg>'">
+              <span class="font-semibold text-gray-200 tracking-wide truncate flex-1" title="${p.name}">${p.name}</span>
             </div>
           </td>
         `;
